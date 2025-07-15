@@ -7,12 +7,13 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
+import userRoute from './controllers/user/user.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
 const app: Application = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const APP_NAME = process.env.APP_NAME as string || 'AirMailGoBackendAPI';
+const APP_NAME = process.env.APP_NAME as string || 'AirMailGoBackend';
 const APP_HOST = process.env.APP_HOST as string || 'http://localhost';
 const API_VERSION: string | number = process.env.API_VERSION || 'v1';
 const APP_PORT: string | number = parseInt(process.env.APP_PORT || '8080', 10);
@@ -33,6 +34,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use(helmet());
 app.use(compression());
+app.use(`/api/${API_VERSION}/user`, userRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 const serve = async () => {

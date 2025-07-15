@@ -1,7 +1,7 @@
 {
   "name": "airmailgobackend",
   "version": "1.0.0",
-  "description": "",
+  "description": "AirMailGo is a robust Node.js backend application providing RESTful API endpoints for seamless communication and data management. Utilizing modern technologies like Express.js, MongoDB, and Swagger UI, AirMailGo facilitates secure, scalable, and efficient AI related services",
   "main": "src/server.ts",
   "scripts": {
     "dev": "nodemon --exec tsx src/server.ts",

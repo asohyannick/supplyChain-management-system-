@@ -28,6 +28,22 @@ const userValidationSchema = Yup.object().shape({
         .required('Admin status is required').default(false),
 });
 
+const userLoginValidationSchema = Yup.object().shape({
+    email: Yup.string()
+        .required('Email is required')
+        .email('Email must be a valid email address')
+        .max(100, 'Email cannot exceed 100 characters')
+        .trim(),
+
+    password: Yup.string()
+        .required('Password is required')
+        .min(8, 'Password must be at least 8 characters long')
+        .max(100, 'Password cannot exceed 100 characters')
+        .trim(),
+
+})
+
 export {
-    userValidationSchema
+    userValidationSchema,
+    userLoginValidationSchema,
 }

@@ -5,8 +5,10 @@ import { userLoginValidationSchema, userValidationSchema } from '../../utils/val
 import authenticationToken from '../../middleware/authentication/authenToken';
 import signin from '../../serviceImpls/user/login/login.impls';
 import userLogout from '../../serviceImpls/user/logout/logout.impl';
+import showUsers from '../../serviceImpls/user/showUsers/showUser.impl';
 const router = express.Router();
 router.post('/create-account', globalValidator(userValidationSchema), createAccount);
 router.post('/login', globalValidator(userLoginValidationSchema), signin);
 router.post('/logout', userLogout);
+router.get('/show-users', showUsers);
 export default router;

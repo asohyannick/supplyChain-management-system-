@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import databaseConfiguration from './config/databaseConfig/databaseConfig';
-import { setupSwagger } from './config/swaggerUI/swaggerUi';
+import { setupSwagger } from './config/swaggerUI/swaggerUI';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';

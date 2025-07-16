@@ -11,12 +11,14 @@ import deleteUser from '../../serviceImpls/user/deleteAccount/deleteAccount.impl
 import requestAccessToken from '../../serviceImpls/user/refreshAccessToken/refreshAccessToken.impl';
 import resetPassword from '../../serviceImpls/user/resetPassword/resetPassword.impl';
 import forgotPassword from '../../serviceImpls/user/forgotPassword/forgotPassword.impl';
+import firebaseLogin from '../../serviceImpls/user/firebaseAuth/firebaseLogin';
 const router = express.Router();
 router.post('/create-account', globalValidator(userValidationSchema), createAccount);
 router.post('/login', globalValidator(userLoginValidationSchema), signin);
 router.post('/logout', userLogout);
 router.post('/request-access-token', requestAccessToken);
 router.post('/forgot-password', forgotPassword);
+router.post('/firebase-login', firebaseLogin);
 router.post('/reset-password/:token', resetPassword);
 router.get('/show-users', showUsers);
 router.get('/show-user/:id', showUser);

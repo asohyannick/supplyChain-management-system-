@@ -23,6 +23,7 @@ if (process.env.NODE_ENV as string === 'development') {
 setupSwagger(app);
 app.use(cors({
     origin: process.env.FRONTEND_DOMAIN as string,
+    methods: ['POST', 'GET', 'PUT', 'DELETE'],
     credentials: true,
 }));
 const limiter = rateLimit({

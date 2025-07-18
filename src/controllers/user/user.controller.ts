@@ -12,6 +12,7 @@ import requestAccessToken from '../../serviceImpls/user/refreshAccessToken/refre
 import resetPassword from '../../serviceImpls/user/resetPassword/resetPassword.impl';
 import forgotPassword from '../../serviceImpls/user/forgotPassword/forgotPassword.impl';
 import firebaseLogin from '../../serviceImpls/user/firebaseAuth/firebaseLogin';
+import facebookAuth from '../../serviceImpls/user/facebookAuth/facebookAuth';
 import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../serviceImpls/user/gitHubAuth/gitHubAuthLogin';
 const router = express.Router();
 // API Routes
@@ -198,7 +199,7 @@ router.post('/firebase-login', firebaseLogin);
  * /api/v1/user/auth/github:
  *   get:
  *     summary: Redirect to GitHub for authentication
- *     tags: [Auth]
+ *     tags: [User]
  *     responses:
  *       302:
  *         description: Redirected to GitHub
@@ -210,7 +211,7 @@ router.get('/auth/github', redirectToGithubLogin);
  * /api/v1/user/auth/github/callback:
  *   get:
  *     summary: Handle GitHub callback
- *     tags: [Auth]
+ *     tags: [User]
  *     responses:
  *       200:
  *         description: GitHub access token received
@@ -338,9 +339,10 @@ router.put('/update-account/:id', globalValidator(updateUserValidationSchema), u
  *           type: string
  *     responses:
  *       204:
- *         description: Account deleted successfully
+ *         description: User account has been deleted successfully
  *       404:
  *         description: User not found
  */
 router.delete('/delete-account/:id', deleteUser);
+router.post('/auth/facebook', facebookAuth);
 export default router;

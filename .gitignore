@@ -6,4 +6,6 @@ tests
 jest.config.js
 coverage/
 app.log
-
+.github
+.dockerignore
+.github

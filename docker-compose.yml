@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  airMailGo_REST_API:
+    build:
+      context: .  # Ensure the Dockerfile is in the same directory
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env  # Use the same .env file for both services
+    working_dir: /usr/src/server
+    volumes:
+      - .:/usr/src/server  # Mount current directory
+    command: npm run dev  # Development command
+
+  mongodb:
+    image: mongo
+    env_file:
+      - .env  # Use the same .env file
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  mongodb-data:

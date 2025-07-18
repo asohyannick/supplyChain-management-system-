@@ -8,7 +8,7 @@ const databaseConfiguration = async () => {
     }
     try {
         await connect(MONGODB_URL);
-        console.log("MongoDB connection is successful!");
+        console.log("MongoDB connected to the backend successfully!");
     } catch (error: unknown) {
         if (error instanceof Error) {
             console.error("MongoDB connection has failed!", error);

@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import express, { Application } from 'express';
 import morgan from 'morgan';
@@ -9,9 +10,11 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
+import mailPickUpRoute from './controllers/mailPickUp/mailPickUp.controller'
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
 const app: Application = express();
+app.use(cookieParser());
 app.use(express.json());
 setupSwagger(app);
 app.use(express.urlencoded({ extended: true }));
@@ -43,6 +46,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(compression());
 app.use(`/api/${API_VERSION}/user`, userRoute);
+app.use(`/api/${API_VERSION}/mail-pickup`, mailPickUpRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 const serve = async () => {

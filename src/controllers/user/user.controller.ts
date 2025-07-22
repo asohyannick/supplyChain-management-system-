@@ -1,19 +1,19 @@
 import express from 'express';
-import createAccount from '../../serviceImpls/user/createAccount/register.impls';
+import createAccount from '../../services/userService/createAccount/register.impls';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { updateUserValidationSchema, userLoginValidationSchema, userValidationSchema } from '../../utils/validator';
-import signin from '../../serviceImpls/user/login/login.impls';
-import userLogout from '../../serviceImpls/user/logout/logout.impl';
-import showUsers from '../../serviceImpls/user/showUsers/showUser.impl';
-import showUser from '../../serviceImpls/user/showUser/showUser.impl';
-import updateUser from '../../serviceImpls/user/updateAccount/updateUser.impl';
-import deleteUser from '../../serviceImpls/user/deleteAccount/deleteAccount.impl';
-import requestAccessToken from '../../serviceImpls/user/refreshAccessToken/refreshAccessToken.impl';
-import resetPassword from '../../serviceImpls/user/resetPassword/resetPassword.impl';
-import forgotPassword from '../../serviceImpls/user/forgotPassword/forgotPassword.impl';
-import firebaseLogin from '../../serviceImpls/user/firebaseAuth/firebaseLogin';
-import facebookAuth from '../../serviceImpls/user/facebookAuth/facebookAuth';
-import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../serviceImpls/user/gitHubAuth/gitHubAuthLogin';
+import signin from '../../services/userService/login/login.impls';
+import userLogout from '../../services/userService/logout/logout.impl';
+import showUsers from '../../services/userService/showUsers/showUser.impl';
+import showUser from '../../services/userService/showUser/showUser.impl';
+import updateUser from '../../services/userService/updateAccount/updateUser.impl';
+import deleteUser from '../../services/userService/deleteAccount/deleteAccount.impl';
+import requestAccessToken from '../../services/userService/refreshAccessToken/refreshAccessToken.impl';
+import resetPassword from '../../services/userService/resetPassword/resetPassword.impl';
+import forgotPassword from '../../services/userService/forgotPassword/forgotPassword.impl';
+import firebaseLogin from '../../services/userService/firebaseAuth/firebaseLogin';
+import facebookAuth from '../../services/userService/facebookAuth/facebookAuth';
+import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../services/userService/gitHubAuth/gitHubAuthLogin';
 const router = express.Router();
 // API Routes
 /**

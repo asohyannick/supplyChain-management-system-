@@ -21,16 +21,15 @@ declare global {
 }
 
 const authenticationToken = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies["auth"];
+    const token = req.cookies['auth'];
     if (!token) {
         return res.status(StatusCodes.UNAUTHORIZED).json({ message: "Access Denied!" });
     }
-
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as CustomJWTPayload;
         req.userId = decoded.userId;
         req.user = { id: req.userId, isAdmin: decoded.isAdmin };
-        next(); // Proceed to the next middleware 
+        next(); 
     } catch (error) {
         console.error("Token verification failed:", error);
         return res.status(StatusCodes.UNAUTHORIZED).json({ message:"Access Denied!"});

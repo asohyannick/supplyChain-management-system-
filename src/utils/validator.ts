@@ -25,7 +25,7 @@ const userValidationSchema = Yup.object().shape({
         .trim(),
 
     isAdmin: Yup.boolean()
-        .required('Admin status is required').default(false),
+        .optional().default(false),
 });
 
 const userLoginValidationSchema = Yup.object().shape({
@@ -67,12 +67,37 @@ const updateUserValidationSchema = Yup.object().shape({
         .max(100, 'Password cannot exceed 100 characters')
         .trim(),
 
-    isAdmin: Yup.boolean()
-        .required('Admin status is required').default(false),
+    isAdmin: Yup.boolean().optional().default(false),
+});
+const addressSchema = Yup.object().shape({
+    street: Yup.string().trim().required('Street is required'),
+    city: Yup.string().trim().required('City is required'),
+    state: Yup.string().trim().required('State is required'),
+    zipCode: Yup.string().trim().required('Zip code is required'),
+    country: Yup.string().trim().default('').required('Country is required'),
+});
+
+const packageDetailsSchema = Yup.object().shape({
+    weight: Yup.number().required('Weight is required'),
+    dimensions: Yup.object().shape({
+        length: Yup.number().required('Length is required'),
+        width: Yup.number().required('Width is required'),
+        height: Yup.number().required('Height is required'),
+    }),
+    description: Yup.string().trim().required('Description is required'),
+});
+
+const mailPickUpSchema = Yup.object().shape({
+    userId: Yup.string().trim().optional(), // Assuming userId is a string representation of ObjectId
+    pickupTime: Yup.date().default(() => new Date()),
+    address: addressSchema,
+    notes: Yup.string().trim().required('Notes are required'),
+    packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
 });
 
 export {
     userValidationSchema,
     userLoginValidationSchema,
-    updateUserValidationSchema
+    updateUserValidationSchema,
+    mailPickUpSchema
 }

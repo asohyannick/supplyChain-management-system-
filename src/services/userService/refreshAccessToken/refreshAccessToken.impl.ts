@@ -19,7 +19,14 @@ const requestAccessToken = async (req: Request, res: Response): Promise<Response
                 message: "Invalid Credentials",
             });
         }
-        const accessToken = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, isAdmin: user.isAdmin }, process.env.JWT_SECRET_KEY as string, {
+        const payload = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isAdmin: user.isAdmin
+        };
+        const accessToken = jwt.sign({ payload }, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
         });
         return res.status(StatusCodes.OK).json({

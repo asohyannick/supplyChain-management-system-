@@ -22,10 +22,17 @@ const createAccount = async (req: Request, res: Response) => {
             isAdmin: true,
         });
         await newUser.save();
-        const accessToken = jwt.sign({ id: newUser._id, firstName: newUser.firstName, lastName: newUser.lastName, email: newUser.email, password: newUser.password, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET_KEY as string, {
+        const payload = {
+            id: newUser.id,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            email: newUser.email,
+            isAdmin: newUser.isAdmin
+        };
+        const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
         });
-        const refreshToken = jwt.sign({ id: newUser._id, firstName: newUser.firstName, lastName: newUser.lastName, email: newUser.email, password: newUser.password, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET_KEY as string, {
+        const refreshToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '7h',
         });
         newUser.refreshToken = refreshToken;
@@ -36,10 +43,17 @@ const createAccount = async (req: Request, res: Response) => {
             maxAge: 90000,
             sameSite: 'strict',
         });
+        const safeUser = {
+            id: newUser.id,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            email: newUser.email,
+            isAdmin: newUser.isAdmin,
+        };
         return res.status(StatusCodes.CREATED).json({
             success: true,
-            message: "User registration has been done successfully!",
-            user: newUser,
+            message: "User registration is successful!",
+            user: safeUser,
             accessToken,
             refreshToken,
         });

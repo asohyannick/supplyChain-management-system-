@@ -13,17 +13,24 @@ const signin = async (req: Request, res: Response) => {
                 message: "User doesn't exist!",
             });
         }
-        const comparedPassword = await bcrypt.compare(password,  user.password);
+        const comparedPassword = await bcrypt.compare(password, user.password);
         if (!comparedPassword) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 success: false,
                 message: "Invalid Credentials",
             });
         }
-        const accessToken = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, isAdmin: user.isAdmin }, process.env.JWT_SECRET_KEY as string, {
+        const payload = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isAdmin: user.isAdmin
+        };
+        const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
         });
-        const refreshToken = jwt.sign({ id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, password: user.password, isAdmin: user.isAdmin }, process.env.JWT_SECRET_KEY as string, {
+        const refreshToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '7h',
         });
         user.refreshToken = refreshToken;
@@ -34,10 +41,17 @@ const signin = async (req: Request, res: Response) => {
             maxAge: 90000,
             sameSite: 'strict',
         });
+         const safeUser = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        };
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "User login has been done successfully!",
-            user,
+            message: "User login is successful!",
+            user: safeUser,
             accessToken,
             refreshToken,
         });

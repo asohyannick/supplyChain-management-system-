@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { UserStatus } from '../serviceImplementators/user/user.interfac';
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -24,8 +25,9 @@ const userValidationSchema = Yup.object().shape({
         .max(100, 'Password cannot exceed 100 characters')
         .trim(),
 
-    isAdmin: Yup.boolean()
-        .optional().default(false),
+    role: Yup.mixed<UserStatus>()
+        .oneOf(Object.values(UserStatus), 'Invalid user status')
+        .required('User status is required'),
 });
 
 const userLoginValidationSchema = Yup.object().shape({
@@ -66,9 +68,11 @@ const updateUserValidationSchema = Yup.object().shape({
         .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Password cannot exceed 100 characters')
         .trim(),
-
-    isAdmin: Yup.boolean().optional().default(false),
+    role: Yup.mixed<UserStatus>()
+        .oneOf(Object.values(UserStatus), 'Invalid user status')
+        .required('User status is required'),
 });
+
 const addressSchema = Yup.object().shape({
     street: Yup.string().trim().required('Street is required'),
     city: Yup.string().trim().required('City is required'),

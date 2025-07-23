@@ -25,7 +25,7 @@ const signin = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
@@ -46,7 +46,7 @@ const signin = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            isAdmin: user.isAdmin,
+            isAdmin: user.role,
         };
         return res.status(StatusCodes.OK).json({
             success: true,

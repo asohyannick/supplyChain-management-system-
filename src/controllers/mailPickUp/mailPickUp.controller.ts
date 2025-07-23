@@ -3,6 +3,7 @@ import authenticationToken from '../../middleware/authentication/authenToken'; /
 import globalValidator from '../../middleware/globalValidator/globalValidator'; // Middleware for validating request data
 import { mailPickUpSchema } from '../../utils/validator'; // Import the schema for validating pickup requests
 import createMailPickUp from '../../services/mailPickUpService/createMailPickUp/createMailPickUp'; // Import the service to handle pickup creation
+import showMailPickUps from '../../services/mailPickUpService/showMailPickUps/showMailPickUps';
 
 const router = express.Router(); // Create an instance of an Express router
 
@@ -55,5 +56,7 @@ router.post(
     authenticationToken, 
     createMailPickUp 
 );
+
+router.get('/show-pickups', authenticationToken, showMailPickUps);
 
 export default router;

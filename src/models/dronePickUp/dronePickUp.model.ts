@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
-import { IMailPickUp } from "../../serviceImpls/mailPickUp/mailPickUp.interfac";
-const mailPickUpSchema: Schema = new Schema<IMailPickUp>({
+import { DroneStatus, IDronePickUp } from "../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
+const dronePickUpSchema: Schema = new Schema<IDronePickUp>({
     userId: {
         type: Schema.ObjectId,
         ref: 'User',
@@ -8,6 +8,22 @@ const mailPickUpSchema: Schema = new Schema<IMailPickUp>({
     pickupTime: {
         type: Date,
         default: Date.now,
+    },
+    distance:{
+        type: Number,
+    },
+    location:{
+        latitude:{
+            type:Number,
+        },
+        longitude:{
+            type:Number,
+        },
+    },
+    status:{
+        type:String,
+        enum: Object.values(DroneStatus),
+        default: DroneStatus.BUSY,
     },
     address: {
         street: {
@@ -49,5 +65,5 @@ const mailPickUpSchema: Schema = new Schema<IMailPickUp>({
         },
     }],
 }, { timestamps: true });
-const MailPickUp = model<IMailPickUp>("MailPickUp", mailPickUpSchema);
-export default MailPickUp;
+const DronePickUp = model<IDronePickUp>("DronePickUp", dronePickUpSchema);
+export default DronePickUp;

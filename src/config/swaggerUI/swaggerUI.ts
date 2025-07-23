@@ -41,7 +41,7 @@ const swaggerOptions = {
                     },
                     required: ['firstName', 'lastName', 'email', 'password'],
                 },
-                MailPickup: { 
+                DronePickup: { 
                     type: 'object',
                     properties: {
                         userId: {

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import bcrypt from 'bcryptjs';
-import { IUser } from "../../services/userService/user.interfac";
+import { IUser, UserStatus } from "../../serviceImplementators/user/user.interfac";
 const userSchema: Schema = new Schema<IUser>({
     firstName: {
         type: String,
@@ -15,9 +15,10 @@ const userSchema: Schema = new Schema<IUser>({
     password: {
         type: String,
     },
-    isAdmin: {
-        type: Boolean,
-        default: false,
+    role: {
+        type: String,
+        enum: Object.values(UserStatus),
+        default: UserStatus.DRONE_OPERATOR,
     },
     refreshToken: {
         type: String,

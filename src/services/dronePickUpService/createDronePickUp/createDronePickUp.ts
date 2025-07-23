@@ -1,28 +1,33 @@
-import MailPickUp from "../../../models/mailPickUp/mailPickUp";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-
-const createMailPickUp = async (req: Request, res: Response): Promise<Response> => {
+import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
+import { DroneStatus } from "../../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
+const createDronePickUp = async (req: Request, res: Response): Promise<Response> => {
     const {
+        distance,
+        location,
         address,
         notes,
         packageDetails,
     } = req.body;
 
     try {
-        const newMailPickUp = new MailPickUp({
+        const newDronePickUp = new DronePickUp({
             pickupTime: Date.now(),
+            distance,
+            location,
+            status:DroneStatus.AVAILABLE,
             address,
             notes,
             packageDetails,
         });
         
-        await newMailPickUp.save();
+        await newDronePickUp.save();
 
         return res.status(StatusCodes.CREATED).json({
             success: true,
-            message: "Your pickup request has been successfully created.",
-            pickupDetails: newMailPickUp,
+            message: "Your drone pickup request has been successfully created.",
+            pickupDetails: newDronePickUp,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);
@@ -35,4 +40,4 @@ const createMailPickUp = async (req: Request, res: Response): Promise<Response> 
     }
 };
 
-export default createMailPickUp;
+export default createDronePickUp;

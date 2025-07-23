@@ -64,6 +64,9 @@ const dronePickUpSchema: Schema = new Schema<IDronePickUp>({
             type: String,
         },
     }],
+    batteryLevel:{
+        type:Number,
+    },
 }, { timestamps: true });
 const DronePickUp = model<IDronePickUp>("DronePickUp", dronePickUpSchema);
 export default DronePickUp;

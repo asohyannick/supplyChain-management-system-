@@ -9,6 +9,7 @@ const createDronePickUp = async (req: Request, res: Response): Promise<Response>
         address,
         notes,
         packageDetails,
+        batteryLevel,
     } = req.body;
 
     try {
@@ -20,10 +21,9 @@ const createDronePickUp = async (req: Request, res: Response): Promise<Response>
             address,
             notes,
             packageDetails,
+            batteryLevel,
         });
-        
         await newDronePickUp.save();
-
         return res.status(StatusCodes.CREATED).json({
             success: true,
             message: "Your drone pickup request has been successfully created.",

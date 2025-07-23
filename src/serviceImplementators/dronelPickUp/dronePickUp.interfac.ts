@@ -30,5 +30,6 @@ export interface IDronePickUp extends Document {
             height: number;
         },
         description: string;
-    }]
+    }],
+    batteryLevel: number;
 }

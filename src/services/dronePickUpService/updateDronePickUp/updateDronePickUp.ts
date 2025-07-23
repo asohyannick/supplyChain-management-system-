@@ -1,4 +1,3 @@
-import MailPickUp from "../../../models/dronePickUp/dronePickUp.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
@@ -11,6 +10,7 @@ const updateDronePickUp = async (req: Request, res: Response): Promise<Response>
             address,
             notes,
             packageDetails,
+            batteryLevel,
         } = req.body;
         const { id } = req.params;
         const pickup = await DronePickUp.findByIdAndUpdate(id, {
@@ -21,6 +21,7 @@ const updateDronePickUp = async (req: Request, res: Response): Promise<Response>
             address,
             notes,
             packageDetails,
+            batteryLevel,
         }, { new: true, runValidators: true });
         if (!pickup) {
             return res.status(StatusCodes.NOT_FOUND).json({

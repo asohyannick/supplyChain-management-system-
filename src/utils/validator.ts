@@ -97,6 +97,7 @@ const dronePickUpSchema = Yup.object().shape({
     address: addressSchema,
     notes: Yup.string().trim().required('Notes are required'),
     packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
+    batteryLevel: Yup.number().integer().required('BatteryLevel is required'),
 });
 const updateDronePickUpSchema = Yup.object().shape({
     userId: Yup.string().trim().optional(), 
@@ -104,6 +105,7 @@ const updateDronePickUpSchema = Yup.object().shape({
     address: addressSchema,
     notes: Yup.string().trim().required('Notes are required'),
     packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
+    batteryLevel: Yup.number().integer().required('BatteryLevel is required'),
 });
 
 export {

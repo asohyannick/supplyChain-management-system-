@@ -1,10 +1,11 @@
 import express from 'express'; // Import the express library for creating the router
 import authenticationToken from '../../middleware/authentication/authenToken'; // Middleware for token-based authentication
 import globalValidator from '../../middleware/globalValidator/globalValidator'; // Middleware for validating request data
-import { mailPickUpSchema } from '../../utils/validator'; // Import the schema for validating pickup requests
+import { mailPickUpSchema, updateMailPickUpSchema } from '../../utils/validator'; // Import the schema for validating pickup requests
 import createMailPickUp from '../../services/mailPickUpService/createMailPickUp/createMailPickUp'; // Import the service to handle pickup creation
 import showMailPickUps from '../../services/mailPickUpService/showMailPickUps/showMailPickUps';
 import showMailPickUp from '../../services/mailPickUpService/showMailPickUp/showMailPickUp';
+import updateMailPickUp from '../../services/mailPickUpService/updateMailPickUp/updateMailPickUp';
 
 const router = express.Router(); // Create an instance of an Express router
 
@@ -59,4 +60,5 @@ router.post(
 );
 router.get('/show-pickups', authenticationToken, showMailPickUps);
 router.get('/show-pickup/:id', authenticationToken, showMailPickUp);
+router.put('/update-pickup/:id', authenticationToken, globalValidator(updateMailPickUpSchema), updateMailPickUp);
 export default router;

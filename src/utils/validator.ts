@@ -94,10 +94,19 @@ const mailPickUpSchema = Yup.object().shape({
     notes: Yup.string().trim().required('Notes are required'),
     packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
 });
+const updateMailPickUpSchema = Yup.object().shape({
+    userId: Yup.string().trim().optional(), // Assuming userId is a string representation of ObjectId
+    pickupTime: Yup.date().default(() => new Date()),
+    address: addressSchema,
+    notes: Yup.string().trim().required('Notes are required'),
+    packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
+});
+
 
 export {
     userValidationSchema,
     userLoginValidationSchema,
     updateUserValidationSchema,
-    mailPickUpSchema
+    mailPickUpSchema,
+    updateMailPickUpSchema,
 }

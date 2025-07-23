@@ -2,6 +2,7 @@ import User from "../../../models/user/user.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
+import { UserStatus } from "../../../serviceImplementators/user/user.interfac";
 const createAccount = async (req: Request, res: Response) => {
     const { firstName, lastName, email, password } = req.body;
     try {
@@ -19,7 +20,7 @@ const createAccount = async (req: Request, res: Response) => {
             lastName,
             email,
             password,
-            isAdmin: true,
+            role: UserStatus.USER,
         });
         await newUser.save();
         const payload = {
@@ -27,7 +28,7 @@ const createAccount = async (req: Request, res: Response) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
-            isAdmin: newUser.isAdmin
+            isAdmin: newUser.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
@@ -48,7 +49,7 @@ const createAccount = async (req: Request, res: Response) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
-            isAdmin: newUser.isAdmin,
+            isAdmin: newUser.role,
         };
         return res.status(StatusCodes.CREATED).json({
             success: true,

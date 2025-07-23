@@ -1,6 +1,7 @@
 import User from "../../../models/user/user.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import { UserStatus } from "../../../serviceImplementators/user/user.interfac";
 const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -15,7 +16,7 @@ const updateUser = async (req: Request, res: Response) => {
             lastName,
             email,
             password,
-            isAdmin: true,
+            role: UserStatus.DISPATCHER,
         }, { new: true, runValidators: true });
         if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User doesn't exist" });

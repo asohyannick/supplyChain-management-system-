@@ -1,20 +1,13 @@
-import MailPickUp from "../../../models/mailPickUp/mailPickUp";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-const showMailPickUp = async (req: Request, res: Response): Promise<Response> => {
+import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
+const showDronePickUps = async (_req: Request, res: Response): Promise<Response> => {
     try {
-        const { id } = req.params;
-        const pickup = await MailPickUp.findById(id);
-        if (!pickup) {
-            return res.status(StatusCodes.NOT_FOUND).json({ 
-                success: false,
-                message: "Pickup doesn't exist!",
-            })
-        }
+        const pickups = await DronePickUp.find();
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Your pickup has been fetched successfully",
-            pickup,
+            message: "Your drone pickups have been fetched successfully",
+            pickupDetails: pickups,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);
@@ -27,4 +20,4 @@ const showMailPickUp = async (req: Request, res: Response): Promise<Response> =>
     }
 };
 
-export default showMailPickUp;
+export default showDronePickUps;

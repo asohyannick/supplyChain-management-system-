@@ -10,7 +10,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
-import mailPickUpRoute from './controllers/mailPickUp/mailPickUp.controller'
+import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller'
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
 const app: Application = express();
@@ -41,12 +41,12 @@ const limiter = rateLimit({
     limit: 100,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
-})
+});
 app.use(limiter);
 app.use(helmet());
 app.use(compression());
 app.use(`/api/${API_VERSION}/user`, userRoute);
-app.use(`/api/${API_VERSION}/mail-pickup`, mailPickUpRoute);
+app.use(`/api/${API_VERSION}/drone-pickup`, dronePickUpRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 const serve = async () => {

@@ -1,29 +1,37 @@
-import MailPickUp from "../../../models/mailPickUp/mailPickUp";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-const updateMailPickUp = async (req: Request, res: Response): Promise<Response> => {
+import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
+import { DroneStatus } from "../../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
+const updateDronePickUp = async (req: Request, res: Response): Promise<Response> => {
     try {
         const {
+            distance,
+            location,
             address,
             notes,
             packageDetails,
+            batteryLevel,
         } = req.body;
         const { id } = req.params;
-        const pickup = await MailPickUp.findByIdAndUpdate(id, {
+        const pickup = await DronePickUp.findByIdAndUpdate(id, {
+            distance,
+            location,
+            status: DroneStatus.AVAILABLE,
             pickupTime: Date.now(),
             address,
             notes,
             packageDetails,
+            batteryLevel,
         }, { new: true, runValidators: true });
         if (!pickup) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 success: false,
                 message: "Pickup doesn't exist!",
-            })
+            });
         }
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Your pickup has been updated successfully",
+            message: "Your drone pickup has been updated successfully",
             pickup,
         });
     } catch (error) {
@@ -37,4 +45,4 @@ const updateMailPickUp = async (req: Request, res: Response): Promise<Response> 
     }
 };
 
-export default updateMailPickUp;
+export default updateDronePickUp;

@@ -6,6 +6,7 @@ import createMailPickUp from '../../services/mailPickUpService/createMailPickUp/
 import showMailPickUps from '../../services/mailPickUpService/showMailPickUps/showMailPickUps';
 import showMailPickUp from '../../services/mailPickUpService/showMailPickUp/showMailPickUp';
 import updateMailPickUp from '../../services/mailPickUpService/updateMailPickUp/updateMailPickUp';
+import deleteMailPickUp from '../../services/mailPickUpService/deleteMailPickUp/deleteMailPickUp';
 
 const router = express.Router(); // Create an instance of an Express router
 
@@ -61,4 +62,5 @@ router.post(
 router.get('/show-pickups', authenticationToken, showMailPickUps);
 router.get('/show-pickup/:id', authenticationToken, showMailPickUp);
 router.put('/update-pickup/:id', authenticationToken, globalValidator(updateMailPickUpSchema), updateMailPickUp);
+router.delete('/delete-pickup/:id', authenticationToken, deleteMailPickUp);
 export default router;

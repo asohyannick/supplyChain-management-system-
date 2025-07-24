@@ -1,9 +1,12 @@
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 import express, { Application } from 'express';
+import http from 'http';
+import { WebSocketServer } from 'ws';
 import morgan from 'morgan';
 import logger from './config/logger/logger';
 import databaseConfiguration from './config/databaseConfig/databaseConfig';
+import DronePickUp from './models/dronePickUp/dronePickUp.model';
 import { setupSwagger } from './config/swaggerUI/swaggerUI';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -13,11 +16,33 @@ import userRoute from './controllers/user/user.controller';
 import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller'
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
+import { IDronePickUp } from './serviceImplementators/dronelPickUp/dronePickUp.interfac';
+import { getMockDroneData } from './utils/mockDroneData';
 const app: Application = express();
 app.use(cookieParser());
 app.use(express.json());
 setupSwagger(app);
 app.use(express.urlencoded({ extended: true }));
+const server = http.createServer(app);
+const wss = new WebSocketServer({server});
+const initWebSocketServer = () => {
+    wss.on('connection', (ws) => {
+        console.log('New client connected');
+        ws.on('message', (message) => {
+            const droneData = JSON.parse(message.toString());
+            saveDroneData(droneData);
+        });
+
+        setInterval(() => {
+            const droneData = getMockDroneData();
+            ws.send(JSON.stringify(droneData));
+        }, 1000);
+    });
+};
+async function saveDroneData(data: IDronePickUp) {
+    const dronePickUp = new DronePickUp(data);
+    await dronePickUp.save();
+}
 const APP_NAME = process.env.APP_NAME as string || 'AirMailGoBackend';
 const APP_HOST = process.env.APP_HOST as string || 'http://localhost';
 const API_VERSION: string | number = process.env.API_VERSION || 'v1';
@@ -49,7 +74,7 @@ app.use(`/api/${API_VERSION}/user`, userRoute);
 app.use(`/api/${API_VERSION}/drone-pickup`, dronePickUpRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
-const serve = async () => {
+const startServer = async () => {
     try {
         await databaseConfiguration(),
             app.listen(APP_PORT, () => {
@@ -74,5 +99,6 @@ const serve = async () => {
         }
     }
 }
-serve();
+initWebSocketServer();
+startServer();
 export default app;

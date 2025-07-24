@@ -7,7 +7,6 @@ import showDronePickUps from '../../services/dronePickUpService/showDronePickUps
 import showDronePickUp from '../../services/dronePickUpService/showDronePickUp/showDronePickUp';
 import updateDronePickUp from '../../services/dronePickUpService/updateDronePickUp/updateDronePickUp';
 import deleteDronePickUp from '../../services/dronePickUpService/deleteDronePickUp/deleteDronePickUp';
-
 const router = express.Router(); // Create an instance of an Express router
 
 /**

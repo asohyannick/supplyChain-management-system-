@@ -28,6 +28,10 @@ const userValidationSchema = Yup.object().shape({
     role: Yup.mixed<UserStatus>()
         .oneOf(Object.values(UserStatus), 'Invalid user status')
         .required('User status is required'),
+    biometricData: Yup.string()
+        .required('Biometric data is required')
+        .matches(/^[A-Za-z0-9+/=]*$/, 'Invalid biometric data format'), 
+
 });
 
 const userLoginValidationSchema = Yup.object().shape({
@@ -92,7 +96,7 @@ const packageDetailsSchema = Yup.object().shape({
 });
 
 const dronePickUpSchema = Yup.object().shape({
-    userId: Yup.string().trim().optional(), 
+    userId: Yup.string().trim().optional(),
     pickupTime: Yup.date().default(() => new Date()),
     address: addressSchema,
     notes: Yup.string().trim().required('Notes are required'),
@@ -100,7 +104,7 @@ const dronePickUpSchema = Yup.object().shape({
     batteryLevel: Yup.number().integer().required('BatteryLevel is required'),
 });
 const updateDronePickUpSchema = Yup.object().shape({
-    userId: Yup.string().trim().optional(), 
+    userId: Yup.string().trim().optional(),
     pickupTime: Yup.date().default(() => new Date()),
     address: addressSchema,
     notes: Yup.string().trim().required('Notes are required'),

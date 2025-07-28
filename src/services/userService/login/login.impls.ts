@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 const signin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
-        let user = await User.findOne({ email, isAdmin: true });
+        let user = await User.findOne({ email });
         if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 success: false,
@@ -25,7 +25,7 @@ const signin = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            isAdmin: user.role,
+            role: user.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
@@ -46,7 +46,7 @@ const signin = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
-            isAdmin: user.role,
+            role: user.role,
         };
         return res.status(StatusCodes.OK).json({
             success: true,

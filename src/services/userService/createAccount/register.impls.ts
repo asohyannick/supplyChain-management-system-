@@ -4,8 +4,9 @@ import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
 import { UserStatus } from "../../../serviceImplementators/user/user.interfac";
 const createAccount = async (req: Request, res: Response) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, biometricData } = req.body;
     try {
+        const qrCodeSecret = Math.random().toString(32).substring(2, 10); 
         const user = await User.findOne({ email });
         if (user) {
             user.refreshToken = '';
@@ -21,6 +22,8 @@ const createAccount = async (req: Request, res: Response) => {
             email,
             password,
             role: UserStatus.USER,
+            biometricData,
+            qrCodeSecret
         });
         await newUser.save();
         const payload = {
@@ -28,7 +31,7 @@ const createAccount = async (req: Request, res: Response) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
-            isAdmin: newUser.role,
+            role: newUser.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
             expiresIn: '50m',
@@ -49,7 +52,7 @@ const createAccount = async (req: Request, res: Response) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
-            isAdmin: newUser.role,
+            role: newUser.role,
         };
         return res.status(StatusCodes.CREATED).json({
             success: true,
@@ -57,16 +60,15 @@ const createAccount = async (req: Request, res: Response) => {
             user: safeUser,
             accessToken,
             refreshToken,
+            qrCodeSecret,
         });
-    } catch (error: unknown) {
-        console.error("Erorred occured!", error);
-        if (error instanceof Error) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                success: false,
-                message: "Something went wrong!",
-                error: error.message,
-            });
-        }
+    } catch (error) {
+        console.error("Error occurred!", error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Something went wrong!",
+            error: error instanceof Error ? error.message : "Unknown error",
+        });
     }
 }
 

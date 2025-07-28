@@ -7,17 +7,17 @@ import morgan from 'morgan';
 import logger from './config/logger/logger';
 import databaseConfiguration from './config/databaseConfig/databaseConfig';
 import DronePickUp from './models/dronePickUp/dronePickUp.model';
+import { IDronePickUp } from './serviceImplementators/dronelPickUp/dronePickUp.interfac';
+import { getMockDroneData } from './utils/mockDroneData';
 import { setupSwagger } from './config/swaggerUI/swaggerUI';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
-import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller'
+import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
-import { IDronePickUp } from './serviceImplementators/dronelPickUp/dronePickUp.interfac';
-import { getMockDroneData } from './utils/mockDroneData';
 const app: Application = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -27,7 +27,7 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({server});
 const initWebSocketServer = () => {
     wss.on('connection', (ws) => {
-        console.log('New client connected');
+        console.log('New client connected successfully');
         ws.on('message', (message) => {
             const droneData = JSON.parse(message.toString());
             saveDroneData(droneData);

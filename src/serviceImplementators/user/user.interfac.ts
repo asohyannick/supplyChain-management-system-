@@ -12,4 +12,6 @@ export interface IUser extends Document {
     password: string;
     role:UserStatus;
     refreshToken: string;
+    biometricData: string;
+    qrCodeSecret: string;
 }

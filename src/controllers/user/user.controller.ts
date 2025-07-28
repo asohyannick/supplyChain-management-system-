@@ -14,8 +14,16 @@ import forgotPassword from '../../services/userService/forgotPassword/forgotPass
 import firebaseLogin from '../../services/userService/firebaseAuth/firebaseLogin';
 import facebookAuth from '../../services/userService/facebookAuth/facebookAuth';
 import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../services/userService/gitHubAuth/gitHubAuthLogin';
+import generateQRCode from '../../services/userService/generateQRCode/generateQRCode';
 const router = express.Router();
 // API Routes
+/**
+ * @swagger
+ * tags:
+ *   name: User Authentication
+ *   description: Operations related to user authentication and management
+ */
+
 /**
  * @swagger
  * /api/v1/user/create-account:
@@ -35,6 +43,65 @@ const router = express.Router();
  *         description: Validation error
  */
 router.post('/create-account', globalValidator(userValidationSchema), createAccount);
+
+/**
+ * @swagger
+ * /api/v1/user/generate-qr-code/{id}:
+ *   get:
+ *     summary: Generate a QR code for a user
+ *     tags: [User]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The ID of the user for whom to generate the QR code.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: QR code generated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "QR code generated successfully."
+ *                 qrCodeUrl:
+ *                   type: string
+ *                   example: "http://example.com/path/to/qr-code.png"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "User not found."
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "Something went wrong!"
+ */
+router.get('/generate-qr-code/:id', generateQRCode);
 
 /**
  * @swagger

@@ -24,6 +24,14 @@ const userSchema: Schema = new Schema<IUser>({
         type: String,
         trim: true,
     },
+    biometricData:{
+        type:String,
+        default:'',
+    },
+    qrCodeSecret:{
+        type:String,
+        default:'',
+    },
 }, { timestamps: true });
 userSchema.pre<IUser>('save', async function (next) {
     if(!this.isModified('password')) return next;

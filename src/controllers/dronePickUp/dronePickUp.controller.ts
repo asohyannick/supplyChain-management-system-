@@ -12,8 +12,8 @@ const router = express.Router(); // Create an instance of an Express router
 /**
  * @swagger
  * tags:
- *   name: MailPickup
- *   description: Operations related to mail pickups
+ *   name: DronePickup
+ *   description: Operations related to drone pickups and management
  */
 
 /**

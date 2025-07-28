@@ -7,6 +7,7 @@ import showDronePickUps from '../../services/dronePickUpService/showDronePickUps
 import showDronePickUp from '../../services/dronePickUpService/showDronePickUp/showDronePickUp';
 import updateDronePickUp from '../../services/dronePickUpService/updateDronePickUp/updateDronePickUp';
 import deleteDronePickUp from '../../services/dronePickUpService/deleteDronePickUp/deleteDronePickUp';
+import droneWeatherMapOptimization from '../../services/dronePickUpService/droneWeatherDataOptimization/droneWeatherDataOptimization';
 const router = express.Router(); // Create an instance of an Express router
 
 /**
@@ -60,6 +61,7 @@ router.post(
 );
 router.get('/show-pickups', authenticationToken, showDronePickUps);
 router.get('/show-pickup/:id', authenticationToken, showDronePickUp);
+router.get('/ai-drone-optimization', authenticationToken, droneWeatherMapOptimization);
 router.put('/update-pickup/:id', authenticationToken, globalValidator(updateDronePickUpSchema), updateDronePickUp);
 router.delete('/delete-pickup/:id', authenticationToken, deleteDronePickUp);
 export default router;

@@ -4,6 +4,7 @@ import createBlockChainDeliveryLog from '../../services/blockChainDelivery/creat
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { BlockChainDeliverySchema } from '../../utils/validator';
 import showBlockChainDeliveryLogs from '../../services/blockChainDelivery/showBlockChainDeliveryLogs/showBlockChainDeliveryLogs';
+import showBlockChainDeliveryLog from '../../services/blockChainDelivery/showBlockChainDelivery/showBlockChainDeliveryLog';
 const router = express.Router();
 /**
  * @swagger
@@ -36,4 +37,74 @@ router.post('/create-delivery-logs',
     createBlockChainDeliveryLog
 );
 router.get('/show-delivery-logs', authenticationToken, showBlockChainDeliveryLogs);
+/**
+ * @swagger
+ * /api/v1/block-chain/show-delivery-log/{id}:
+ *   get:
+ *     summary: Retrieve a specific delivery log from the blockchain
+ *     description: Endpoint to fetch a delivery log by its unique identifier.
+ *     tags: [BlockChainDelivery]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Unique identifier for the delivery log
+ *         type: string
+ *         format: objectId
+ *     security:
+ *       - Bearer: []  # Assuming you are using Bearer token for authentication
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved the delivery log
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 userId:
+ *                   type: string
+ *                   format: objectId
+ *                   description: Unique identifier for the user
+ *                 deliveryDetails:
+ *                   type: string
+ *                   description: Details of the delivery
+ *                 timestamp:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The time when the delivery was logged
+ *                 blockchainHash:
+ *                   type: string
+ *                   description: Hash of the blockchain entry for the delivery
+ *       '404':
+ *         description: Delivery log not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Delivery log not found."
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized access."
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An unexpected error occurred."
+ */
+router.get('/show-delivery-log/:id', authenticationToken, showBlockChainDeliveryLog);
 export default router;

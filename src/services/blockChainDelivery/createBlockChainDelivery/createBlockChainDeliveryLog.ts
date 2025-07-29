@@ -9,7 +9,6 @@ const contractAddress = process.env.CONTRACT_ADDRESS as string;
 if (!contractAddress || !/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
     throw new Error('Invalid CONTRACT_ADDRESS in the environment variables');
 }
-console.log('Contract Address:', contractAddress);
 const deliveryContract = new web3.eth.Contract(abi, contractAddress);
 const createBlockChainDeliveryLog = async (req: Request, res: Response): Promise<Response> => {
     const { userId, deliveryDetails } = req.body;

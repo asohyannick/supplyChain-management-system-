@@ -6,6 +6,7 @@ import { BlockChainDeliverySchema, updateBlockChainDeliverySchema } from '../../
 import showBlockChainDeliveryLogs from '../../services/blockChainDelivery/showBlockChainDeliveryLogs/showBlockChainDeliveryLogs';
 import showBlockChainDeliveryLog from '../../services/blockChainDelivery/showBlockChainDelivery/showBlockChainDeliveryLog';
 import updateBlockChainDeliveryLog from '../../services/blockChainDelivery/updateBlockChainDeliveryLog/updateBlockChainDeliveryLog';
+import deleteBlockChainDeliveryLog from '../../services/blockChainDelivery/deleteBlockChainDeliveryLog/deleteBlockChainDeliveryLog';
 const router = express.Router();
 /**
  * @swagger
@@ -21,7 +22,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/blockChainDelivery'
+ *             $ref: '#/components/schemas/BlockChainDelivery'
  *     responses:
  *       200:
  *         description: Delivery log created successfully.
@@ -114,8 +115,7 @@ router.get('/show-delivery-log/:id', authenticationToken, showBlockChainDelivery
  *   put:
  *     summary: Update a specific delivery log in the blockchain
  *     description: Endpoint to update delivery log details by its unique identifier.
- *     tags:
- *       - Delivery
+ *     tags: [BlockChainDelivery]
  *     parameters:
  *       - name: id
  *         in: path
@@ -204,4 +204,63 @@ router.get('/show-delivery-log/:id', authenticationToken, showBlockChainDelivery
  *                   example: "An unexpected error occurred."
  */
 router.put('/update-delivery-log/:id', authenticationToken, globalValidator(updateBlockChainDeliverySchema), updateBlockChainDeliveryLog);
+/**
+ * @swagger
+ * /api/v1/block-chain/delete-delivery-log/{id}:
+ *   delete:
+ *     summary: Delete a specific delivery log from the blockchain
+ *     description: Endpoint to delete a delivery log by its unique identifier.
+ *     tags: [BlockChainDelivery]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Unique identifier for the delivery log
+ *         type: string
+ *         format: objectId
+ *     security:
+ *       - Bearer: []  # Assuming you are using Bearer token for authentication
+ *     responses:
+ *       '200':
+ *         description: Successfully deleted the delivery log
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Delivery log deleted successfully."
+ *       '404':
+ *         description: Delivery log not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Delivery log not found."
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized access."
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An unexpected error occurred."
+ */
+router.delete('/delete-delivery-log/:id', authenticationToken, deleteBlockChainDeliveryLog);
 export default router;

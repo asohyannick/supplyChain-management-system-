@@ -118,7 +118,7 @@ const swaggerOptions = {
                     },
                     required: ['userId', 'pickupTime', 'address', 'packageDetails'], 
                 },
-                blockChainDelivery: {
+                BlockChainDelivery: {
                     type: 'object',
                     properties: {   
                         userId: {

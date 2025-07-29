@@ -131,6 +131,25 @@ const BlockChainDeliverySchema = Yup.object().shape({
         .required('Blockchain hash is required')
         .matches(/^0x[a-fA-F0-9]{40}$/, 'Blockchain hash must be a valid Ethereum address format')
 });
+const updateBlockChainDeliverySchema = Yup.object().shape({
+      userId: Yup.mixed()
+        .required('User ID is required')
+        .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
+            return (
+                value instanceof Types.ObjectId || 
+                (typeof value === 'string' && Types.ObjectId.isValid(value))
+            );
+        }),
+    deliveryDetails: Yup.string()
+        .required('Delivery details are required')
+        .max(500, 'Delivery details cannot exceed 500 characters'),
+    timestamp: Yup.date()
+        .required('Timestamp is required')
+        .max(new Date(), 'Timestamp cannot be in the future'),
+    blockchainHash: Yup.string()
+        .required('Blockchain hash is required')
+        .matches(/^0x[a-fA-F0-9]{40}$/, 'Blockchain hash must be a valid Ethereum address format')
+});
 
 export {
     userValidationSchema,
@@ -139,4 +158,5 @@ export {
     droneSchema,
     updateDroneSchema,
     BlockChainDeliverySchema,
+    updateBlockChainDeliverySchema
 }

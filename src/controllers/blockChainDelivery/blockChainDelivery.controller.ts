@@ -3,9 +3,7 @@ import authenticationToken from '../../middleware/authentication/authenToken';
 import createBlockChainDeliveryLog from '../../services/blockChainDelivery/createBlockChainDelivery/createBlockChainDeliveryLog';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { BlockChainDeliverySchema } from '../../utils/validator';
-
 const router = express.Router();
-
 /**
  * @swagger
  * /api/v1/block-chain/create-delivery-logs:
@@ -31,7 +29,5 @@ const router = express.Router();
  *       500:
  *         description: Internal server error.
  */
-
 router.post('/create-delivery-logs', authenticationToken, globalValidator(BlockChainDeliverySchema), createBlockChainDeliveryLog);
-
 export default router;

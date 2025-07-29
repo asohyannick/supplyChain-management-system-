@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
-import { DroneStatus } from "../../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
-const updateDronePickUp = async (req: Request, res: Response): Promise<Response> => {
+import { DroneStatus } from "../../../serviceImplementators/drone/drone.interfac";
+import Drone from "../../../models/drone/drone.model";
+const updateDroneService = async (req: Request, res: Response): Promise<Response> => {
     try {
         const {
             distance,
@@ -13,7 +13,7 @@ const updateDronePickUp = async (req: Request, res: Response): Promise<Response>
             batteryLevel,
         } = req.body;
         const { id } = req.params;
-        const pickup = await DronePickUp.findByIdAndUpdate(id, {
+        const pickup = await Drone.findByIdAndUpdate(id, {
             distance,
             location,
             status: DroneStatus.AVAILABLE,
@@ -45,4 +45,4 @@ const updateDronePickUp = async (req: Request, res: Response): Promise<Response>
     }
 };
 
-export default updateDronePickUp;
+export default updateDroneService;

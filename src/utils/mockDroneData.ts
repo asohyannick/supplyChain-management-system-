@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { IDronePickUp, DroneStatus } from '../serviceImplementators/dronelPickUp/dronePickUp.interfac';
-import DronePickUp from "../models/dronePickUp/dronePickUp.model";
-export const getMockDroneData = async (): Promise<IDronePickUp> => {
-    const droneData: IDronePickUp = new DronePickUp({
+import { DroneStatus, IDrone } from '../serviceImplementators/drone/drone.interfac';
+import Drone from "../models/drone/drone.model";
+export const getMockDroneData = async (): Promise<IDrone> => {
+    const droneData: IDrone = new Drone({
         userId: new Types.ObjectId(),
         droneId: 'drone1', 
         pickupTime: new Date(), 

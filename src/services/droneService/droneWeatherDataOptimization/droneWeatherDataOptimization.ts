@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import DronePickUp from '../../../models/dronePickUp/dronePickUp.model';
 import { StatusCodes } from 'http-status-codes';
 import fetchWeatherData from '../../../utils/fetchWeatherData';
+import Drone from '../../../models/drone/drone.model';
 const droneWeatherMapOptimization = async (req: Request, res: Response) => {
     const { start, end } = req.body; 
     try {
-        const noFlyZones = await DronePickUp.find(); 
+        const noFlyZones = await Drone.find(); 
         const startWeather = await fetchWeatherData(start.latitude, start.longitude);
         const endWeather = await fetchWeatherData(end.latitude, end.longitude);
         const optimizedRoute = optimizeRoute(start, end, noFlyZones, startWeather, endWeather);

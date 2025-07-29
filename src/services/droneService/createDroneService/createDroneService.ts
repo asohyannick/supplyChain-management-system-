@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
-import { DroneStatus } from "../../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
-const createDronePickUp = async (req: Request, res: Response): Promise<Response> => {
+import { DroneStatus } from "../../../serviceImplementators/drone/drone.interfac";
+import Drone from "../../../models/drone/drone.model";
+const createDroneService = async (req: Request, res: Response): Promise<Response> => {
     const {
         distance,
         location,
@@ -13,7 +13,7 @@ const createDronePickUp = async (req: Request, res: Response): Promise<Response>
     } = req.body;
 
     try {
-        const newDronePickUp = new DronePickUp({
+        const newDronePickUp = new Drone({
             pickupTime: Date.now(),
             distance,
             location,
@@ -40,4 +40,4 @@ const createDronePickUp = async (req: Request, res: Response): Promise<Response>
     }
 };
 
-export default createDronePickUp;
+export default createDroneService;

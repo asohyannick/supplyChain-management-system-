@@ -16,14 +16,6 @@ import facebookAuth from '../../services/userService/facebookAuth/facebookAuth';
 import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../services/userService/gitHubAuth/gitHubAuthLogin';
 import generateQRCode from '../../services/userService/generateQRCode/generateQRCode';
 const router = express.Router();
-// API Routes
-/**
- * @swagger
- * tags:
- *   name: User Authentication
- *   description: Operations related to user authentication and management
- */
-
 /**
  * @swagger
  * /api/v1/user/create-account:

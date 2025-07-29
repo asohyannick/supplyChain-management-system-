@@ -6,8 +6,8 @@ import { WebSocketServer } from 'ws';
 import morgan from 'morgan';
 import logger from './config/logger/logger';
 import databaseConfiguration from './config/databaseConfig/databaseConfig';
-import DronePickUp from './models/dronePickUp/dronePickUp.model';
-import { IDronePickUp } from './serviceImplementators/dronelPickUp/dronePickUp.interfac';
+import DronePickUp from './models/drone/drone.model';
+import { IDrone } from './serviceImplementators/drone/drone.interfac';
 import { getMockDroneData } from './utils/mockDroneData';
 import { setupSwagger } from './config/swaggerUI/swaggerUI';
 import cors from 'cors';
@@ -15,7 +15,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
-import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller';
+import droneRoute from './controllers/drone/drone.controller';
 import blockChainDeliveryRoute from './controllers/blockChainDelivery/blockChainDelivery.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
@@ -40,7 +40,7 @@ const initWebSocketServer = () => {
         }, 1000);
     });
 };
-async function saveDroneData(data: IDronePickUp) {
+async function saveDroneData(data: IDrone) {
     const dronePickUp = new DronePickUp(data);
     await dronePickUp.save();
 }
@@ -72,7 +72,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(compression());
 app.use(`/api/${API_VERSION}/user`, userRoute);
-app.use(`/api/${API_VERSION}/drone-pickup`, dronePickUpRoute);
+app.use(`/api/${API_VERSION}/drone`, droneRoute);
 app.use(`/api/${API_VERSION}/block-chain`, blockChainDeliveryRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);

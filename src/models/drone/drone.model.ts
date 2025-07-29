@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
-import { DroneStatus, IDronePickUp } from "../../serviceImplementators/dronelPickUp/dronePickUp.interfac";
-const dronePickUpSchema: Schema = new Schema<IDronePickUp>({
+import { DroneStatus, IDrone } from "../../serviceImplementators/drone/drone.interfac";
+const droneSchema: Schema = new Schema<IDrone>({
     userId: {
         type: Schema.ObjectId,
         ref: 'User',
@@ -68,5 +68,5 @@ const dronePickUpSchema: Schema = new Schema<IDronePickUp>({
         type:Number,
     },
 }, { timestamps: true });
-const DronePickUp = model<IDronePickUp>("DronePickUp", dronePickUpSchema);
-export default DronePickUp;
+const Drone = model<IDrone>("Drone", droneSchema);
+export default Drone;

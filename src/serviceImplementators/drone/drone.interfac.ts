@@ -4,7 +4,7 @@ export enum DroneStatus {
     BUSY = 'Busy',
     OFFLINE = 'Offline',
 }
-export interface IDronePickUp extends Document {
+export interface IDrone extends Document {
     userId: Types.ObjectId,
     droneId: string;
     pickupTime: Date;

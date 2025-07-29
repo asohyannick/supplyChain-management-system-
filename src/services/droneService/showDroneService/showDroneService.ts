@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
-const showDronePickUp = async (req: Request, res: Response): Promise<Response> => {
+import Drone from "../../../models/drone/drone.model";
+const showDroneService = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { id } = req.params;
-        const pickup = await DronePickUp.findById(id);
+        const pickup = await Drone.findById(id);
         if (!pickup) {
             return res.status(StatusCodes.NOT_FOUND).json({ 
                 success: false,
@@ -27,4 +27,4 @@ const showDronePickUp = async (req: Request, res: Response): Promise<Response> =
     }
 };
 
-export default showDronePickUp;
+export default showDroneService;

@@ -1,23 +1,17 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import DronePickUp from "../../../models/dronePickUp/dronePickUp.model";
-const deleteDronePickUp = async (req: Request, res: Response): Promise<Response> => {
+import Drone from "../../../models/drone/drone.model";
+const showDroneServices = async (_req: Request, res: Response): Promise<Response> => {
     try {
-        const { id } = req.params;
-        const pickup = await DronePickUp.findByIdAndDelete(id);
-        if (!pickup) {
-            return res.status(StatusCodes.NOT_FOUND).json({ 
-                success: false,
-                message: "Pickup doesn't exist!",
-            })
-        }
+        const pickups = await Drone.find();
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Your drone pickup has been deleted successfully",
-            pickup,
+            message: "Your drone pickups have been fetched successfully",
+            pickupDetails: pickups,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);
+
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: "We encountered an error while processing your request. Please try again later.",
@@ -26,4 +20,4 @@ const deleteDronePickUp = async (req: Request, res: Response): Promise<Response>
     }
 };
 
-export default deleteDronePickUp;
+export default showDroneServices;

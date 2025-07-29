@@ -4,8 +4,8 @@ import Drone from "../../../models/drone/drone.model";
 const showDroneService = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { id } = req.params;
-        const pickup = await Drone.findById(id);
-        if (!pickup) {
+        const drone = await Drone.findById(id);
+        if (!drone) {
             return res.status(StatusCodes.NOT_FOUND).json({ 
                 success: false,
                 message: "Pickup doesn't exist!",
@@ -13,8 +13,8 @@ const showDroneService = async (req: Request, res: Response): Promise<Response> 
         }
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Your drone pickup has been fetched successfully",
-            pickup,
+            message: "Your drone pickup service has been fetched successfully",
+            droneDetail: drone,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);

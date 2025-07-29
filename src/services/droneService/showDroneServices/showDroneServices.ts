@@ -3,15 +3,14 @@ import { StatusCodes } from "http-status-codes";
 import Drone from "../../../models/drone/drone.model";
 const showDroneServices = async (_req: Request, res: Response): Promise<Response> => {
     try {
-        const pickups = await Drone.find();
+        const drone = await Drone.find();
         return res.status(StatusCodes.OK).json({
             success: true,
             message: "Your drone pickups have been fetched successfully",
-            pickupDetails: pickups,
+            pickupDetails: drone,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);
-
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             message: "We encountered an error while processing your request. Please try again later.",

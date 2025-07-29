@@ -4,17 +4,17 @@ import Drone from "../../../models/drone/drone.model";
 const deleteDroneService = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { id } = req.params;
-        const pickup = await Drone.findByIdAndDelete(id);
-        if (!pickup) {
+        const drone = await Drone.findByIdAndDelete(id);
+        if (!drone) {
             return res.status(StatusCodes.NOT_FOUND).json({ 
                 success: false,
-                message: "Pickup doesn't exist!",
+                message: "Drone doesn't exist!",
             })
         }
         return res.status(StatusCodes.OK).json({
             success: true,
             message: "Your drone pickup has been deleted successfully",
-            pickup,
+            drone,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);

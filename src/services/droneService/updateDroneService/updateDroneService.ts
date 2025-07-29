@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { DroneStatus } from "../../../serviceImplementators/drone/drone.interfac";
 import Drone from "../../../models/drone/drone.model";
+import app from "../../../server";
+import http from 'http';
+import { WebSocketServer } from 'ws';
+const server = http.createServer(app);
+const wss = new WebSocketServer({ server });
 const updateDroneService = async (req: Request, res: Response): Promise<Response> => {
     try {
         const {
@@ -13,7 +18,7 @@ const updateDroneService = async (req: Request, res: Response): Promise<Response
             batteryLevel,
         } = req.body;
         const { id } = req.params;
-        const pickup = await Drone.findByIdAndUpdate(id, {
+        const updatedDrone = await Drone.findByIdAndUpdate(id, {
             distance,
             location,
             status: DroneStatus.AVAILABLE,
@@ -23,16 +28,20 @@ const updateDroneService = async (req: Request, res: Response): Promise<Response
             packageDetails,
             batteryLevel,
         }, { new: true, runValidators: true });
-        if (!pickup) {
+        wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(updatedDrone));
+        }});
+        if (!updatedDrone) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 success: false,
-                message: "Pickup doesn't exist!",
+                message: "Drone doesn't exist!",
             });
         }
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Your drone pickup has been updated successfully",
-            pickup,
+            message: "Your drone pickup service has been updated successfully",
+            drone: updatedDrone,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);

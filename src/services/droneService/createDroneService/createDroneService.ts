@@ -13,7 +13,7 @@ const createDroneService = async (req: Request, res: Response): Promise<Response
     } = req.body;
 
     try {
-        const newDronePickUp = new Drone({
+        const newDrone = new Drone({
             pickupTime: Date.now(),
             distance,
             location,
@@ -23,11 +23,11 @@ const createDroneService = async (req: Request, res: Response): Promise<Response
             packageDetails,
             batteryLevel,
         });
-        await newDronePickUp.save();
+        await newDrone.save();
         return res.status(StatusCodes.CREATED).json({
             success: true,
-            message: "Your drone pickup request has been successfully created.",
-            pickupDetails: newDronePickUp,
+            message: "Your drone pickup request has been created successfully",
+            droneDetails: newDrone,
         });
     } catch (error) {
         console.error("An error occurred while creating the pickup:", error);

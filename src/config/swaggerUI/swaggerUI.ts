@@ -1,15 +1,13 @@
 import { Application } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express';
-
-// Swagger Options
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'WELCOME TO THE AIRMAILGO REST API DOC',
+            title: 'AirMailGoBackend Restful APIs Documentation',
             version: '1.0.0',
-            description: 'AirMailGo REST API Endpoints Documentation',
+            description: 'The AirMailGoBackend API documentation provides detailed information about the endpoints, request/response formats, and authentication methods used in the application.',
         },
         servers: [
             {
@@ -119,6 +117,26 @@ const swaggerOptions = {
                         },
                     },
                     required: ['userId', 'pickupTime', 'address', 'packageDetails'], 
+                },
+                blockChainDelivery: {
+                    type: 'object',
+                    properties: {   
+                        userId: {
+                            type: 'string',
+                            format: 'objectId', 
+                        },
+                        deliveryDetails: {
+                            type: 'string',     
+                        },  
+                        timestamp: {
+                            type: 'string',
+                            format: 'date-time',
+                        },  
+                        blockchainHash: {
+                            type: 'string',
+                        },
+                    },
+                    required: ['userId', 'deliveryDetails', 'timestamp', 'blockchainHash'],
                 },
             },
         },

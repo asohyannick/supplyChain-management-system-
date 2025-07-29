@@ -16,6 +16,7 @@ import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
 import dronePickUpRoute from './controllers/dronePickUp/dronePickUp.controller';
+import blockChainDeliveryRoute from './controllers/blockChainDelivery/blockChainDelivery.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
 const app: Application = express();
@@ -72,6 +73,7 @@ app.use(helmet());
 app.use(compression());
 app.use(`/api/${API_VERSION}/user`, userRoute);
 app.use(`/api/${API_VERSION}/drone-pickup`, dronePickUpRoute);
+app.use(`/api/${API_VERSION}/block-chain`, blockChainDeliveryRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 const startServer = async () => {

@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { UserStatus } from '../serviceImplementators/user/user.interfac';
+import { Types } from 'mongoose';
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -111,6 +112,25 @@ const updateDronePickUpSchema = Yup.object().shape({
     packageDetails: Yup.array().of(packageDetailsSchema).required('Package details are required'),
     batteryLevel: Yup.number().integer().required('BatteryLevel is required'),
 });
+const BlockChainDeliverySchema = Yup.object().shape({
+      userId: Yup.mixed()
+        .required('User ID is required')
+        .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
+            return (
+                value instanceof Types.ObjectId || 
+                (typeof value === 'string' && Types.ObjectId.isValid(value))
+            );
+        }),
+    deliveryDetails: Yup.string()
+        .required('Delivery details are required')
+        .max(500, 'Delivery details cannot exceed 500 characters'),
+    timestamp: Yup.date()
+        .required('Timestamp is required')
+        .max(new Date(), 'Timestamp cannot be in the future'),
+    blockchainHash: Yup.string()
+        .required('Blockchain hash is required')
+        .matches(/^0x[a-fA-F0-9]{40}$/, 'Blockchain hash must be a valid Ethereum address format')
+});
 
 export {
     userValidationSchema,
@@ -118,4 +138,5 @@ export {
     updateUserValidationSchema,
     dronePickUpSchema,
     updateDronePickUpSchema,
+    BlockChainDeliverySchema,
 }

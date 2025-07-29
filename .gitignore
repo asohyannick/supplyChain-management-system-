@@ -62,12 +62,16 @@ node_modules
 
 # Hardhat Ignition default folder for deployments against a local node
 ignition/deployments/chain-31337
-hardhat.config.ts
-generateWallet.ts
 generateWallet.js
-contracts/
-scripts/
-test/
-ignition
-airMailGoSmartContract.sol
+generateWallet.ts
+hardhat.config.ts
+hardhat.config.js
+jest.config.js
 README.md
+scripts/
+contracts/
+ignition/
+tests/
+test
+airMailGoSmartContract.sol
+

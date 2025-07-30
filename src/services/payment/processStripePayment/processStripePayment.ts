@@ -48,6 +48,4 @@ const processStripePayment = async(req: Request, res: Response): Promise<Respons
     }
 };
 
-export {
-    processStripePayment
-};
+export default processStripePayment;

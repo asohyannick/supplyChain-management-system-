@@ -16,6 +16,7 @@ import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
 import droneRoute from './controllers/drone/drone.controller';
+import paymentRoute from './controllers/payment/payment.controller';
 import blockChainDeliveryRoute from './controllers/blockChainDelivery/blockChainDelivery.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
@@ -91,6 +92,7 @@ app.use(compression());
 app.use(`/api/${API_VERSION}/user`, userRoute);
 app.use(`/api/${API_VERSION}/drone`, droneRoute);
 app.use(`/api/${API_VERSION}/block-chain`, blockChainDeliveryRoute);
+app.use(`/api/${API_VERSION}/payment`, paymentRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 // This function initializes the database and starts the server

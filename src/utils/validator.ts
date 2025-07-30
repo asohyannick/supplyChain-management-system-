@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { UserStatus } from '../serviceImplementators/user/user.interfac';
 import { Types } from 'mongoose';
+import { Currency, PaymentStatus } from '../serviceImplementators/payment/payment.interfac';
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -150,7 +151,18 @@ const updateBlockChainDeliverySchema = Yup.object().shape({
         .required('Blockchain hash is required')
         .matches(/^0x[a-fA-F0-9]{40}$/, 'Blockchain hash must be a valid Ethereum address format')
 });
-
+const stripePaymentSchema = Yup.object().shape({
+    amount: Yup.number().required('The amount must be provided').integer(),
+    currency: Yup.mixed().required('A valid currency must be provided').oneOf(Object.values(Currency)),
+    status: Yup.mixed().optional().oneOf(Object.values(PaymentStatus)),
+    lastUpdated: Yup.date().optional(),
+});
+const updatedStripePaymentSchema = Yup.object().shape({
+    amount: Yup.number().required('The amount must be provided').integer(),
+    currency: Yup.mixed().required('A valid currency must be provided').oneOf(Object.values(Currency)),
+    status: Yup.mixed().optional().oneOf(Object.values(PaymentStatus)),
+    lastUpdated: Yup.date().optional(),
+});
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -158,5 +170,7 @@ export {
     droneSchema,
     updateDroneSchema,
     BlockChainDeliverySchema,
-    updateBlockChainDeliverySchema
+    updateBlockChainDeliverySchema,
+    stripePaymentSchema,
+    updatedStripePaymentSchema,
 }

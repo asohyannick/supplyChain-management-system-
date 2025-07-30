@@ -7,8 +7,10 @@ import showStripePayments from '../../services/payment/showStripePayments/showSt
 import showStripePayment from '../../services/payment/showStripePayment/showStripePayment';
 import editAndUpdateStripePayment from '../../services/payment/updateStripePayment/updateStripePayment';
 import deleteStripePayment from '../../services/payment/deleteStripePayment/deleteStripePayment';
+import refundStripePayment from '../../services/payment/refundStripePayment/refundStripePayment';
 const router = express.Router();
 router.post('/create-payment', authenticationToken, globalValidator(stripePaymentSchema), processStripePayment);
+router.post('/refund-payment/:id', authenticationToken, refundStripePayment);
 router.get('/show-payments', authenticationToken, showStripePayments);
 router.get('/show-payment/:id', authenticationToken, showStripePayment);
 router.put('/update-payment/:id', authenticationToken, globalValidator(updatedStripePaymentSchema), editAndUpdateStripePayment);

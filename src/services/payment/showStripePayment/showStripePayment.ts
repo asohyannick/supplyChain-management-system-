@@ -1,17 +1,21 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import StripePayment from '../../../models/payment/payment.model';
-const showStripePayments = async(_req: Request, res: Response): Promise<Response> => {
+const showStripePayment = async(req: Request, res: Response): Promise<Response> => {
     try {
-        const payments = await StripePayment.find();
+        const { id } = req.params;
+        const payment = await StripePayment.findById(id);
+        if (!payment) {
+            return res.status(StatusCodes.NOT_FOUND).json({message: "Payment doesn't exist!"});
+        }
         return res.status(StatusCodes.OK).json({
             success: true,
-            message: "Stripe payments have been fetched esuccessfully!",
-            payments
+            message: "Stripe payment have been fetched esuccessfully!",
+            payment
         });
     } catch (error) {
         console.error("Error occurred while processing payment with Stripe:", error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
     }
 };
-export  default showStripePayments
+export  default showStripePayment

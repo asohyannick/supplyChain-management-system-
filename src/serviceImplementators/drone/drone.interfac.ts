@@ -31,5 +31,5 @@ export interface IDrone extends Document {
         },
         description: string;
     }],
-    batteryLevel: number;
+    batteryLevel: number;  
 }

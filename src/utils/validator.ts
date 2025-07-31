@@ -163,6 +163,40 @@ const updatedStripePaymentSchema = Yup.object().shape({
     status: Yup.mixed().optional().oneOf(Object.values(PaymentStatus)),
     lastUpdated: Yup.date().optional(),
 });
+const subscriptionSchema = Yup.object().shape({
+      userId: Yup.string()
+        .required('User ID is required')
+        .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
+            if (!value) return false; // Handle null or undefined
+            // Only check if it's a valid ObjectId if it's a string
+            return typeof value === 'string' && Types.ObjectId.isValid(value);
+        }),
+    subscription: Yup.object().shape({
+        endpoint: Yup.string().required('Endpoint is required'),
+        keys: Yup.object().shape({
+            p256dh: Yup.string().required('p256dh key is required'),
+            auth: Yup.string().required('Auth key is required'),
+        }),
+    }),
+});
+const updateSubscriptionSchema = Yup.object().shape({
+    userId: Yup.string()
+        .required('User ID is required')
+        .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
+            if (!value) return false; // Handle null or undefined
+            // Only check if it's a valid ObjectId if it's a string
+            return typeof value === 'string' && Types.ObjectId.isValid(value);
+        }),   
+    subscription: Yup.object().shape({
+        endpoint: Yup.string().required('Endpoint is required'),
+        keys: Yup.object().shape({  
+            p256dh: Yup.string().required('P256DH key is required'),                
+            auth: Yup.string().required('Auth key is required'),
+        }),
+    }).required('Subscription data is required'),
+});
+
+
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -173,4 +207,6 @@ export {
     updateBlockChainDeliverySchema,
     stripePaymentSchema,
     updatedStripePaymentSchema,
+    subscriptionSchema,
+    updateSubscriptionSchema,
 }

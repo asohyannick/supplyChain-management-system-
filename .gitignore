@@ -74,4 +74,5 @@ ignition/
 tests/
 test
 airMailGoSmartContract.sol
-
+generateVapidKey.js
+generateVapidKey.ts

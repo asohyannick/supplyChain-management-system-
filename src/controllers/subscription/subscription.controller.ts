@@ -2,13 +2,15 @@ import express from 'express';
 import createSubscription from '../../services/subscription/createSubscription/createSubscription';
 import authenticationToken from '../../middleware/authentication/authenToken';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
-import { pushNotificationSchema, subscriptionSchema } from '../../utils/validator';
+import { pushNotificationSchema, subscriptionSchema, updateSubscriptionSchema } from '../../utils/validator';
 import pushNotification from '../../services/subscription/pushNotification/pushNotification';
 import showSubscriptions from '../../services/subscription/showSubscriptions/showSubscriptions';
 import showSubscription from '../../services/subscription/showSubscription/showSubscription';
+import updateSubscription from '../../services/subscription/updateSubscription/updateSubscription';
 const router = express.Router();
 router.post('/create-subscription',authenticationToken, globalValidator(subscriptionSchema), createSubscription);
 router.post('/push-notification', authenticationToken, globalValidator(pushNotificationSchema), pushNotification);
 router.get('/show-subscriptions', authenticationToken, showSubscriptions);
 router.get('/show-subscription/:id', authenticationToken, showSubscription);
+router.put('/update-subscription/:id', authenticationToken, globalValidator(updateSubscriptionSchema), updateSubscription); // Assuming updateSubscription is similar to showSubscription
 export default router;

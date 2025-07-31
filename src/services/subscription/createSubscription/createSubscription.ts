@@ -14,9 +14,6 @@ webPush.setVapidDetails(
 const createSubscription = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { userId, subscription } = req.body;
-        if (!userId || !subscription) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID and subscription data are required." });
-        }   
         const newSubscription = new Subscription({
             userId,
             subscription    

@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { UserStatus } from '../serviceImplementators/user/user.interfac';
 import { Types } from 'mongoose';
 import { Currency, PaymentStatus } from '../serviceImplementators/payment/payment.interfac';
+import pushNotification from '../services/subscription/pushNotification/pushNotification';
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -196,6 +197,15 @@ const updateSubscriptionSchema = Yup.object().shape({
     }).required('Subscription data is required'),
 });
 
+const pushNotificationSchema = Yup.object().shape({
+        subscription: Yup.object().shape({
+        endpoint: Yup.string().required('Endpoint is required'),
+        keys: Yup.object().shape({  
+            p256dh: Yup.string().required('P256DH key is required'),                
+            auth: Yup.string().required('Auth key is required'),
+        }),
+    }).required('Subscription data is required'),
+});
 
 export {
     userValidationSchema,
@@ -209,4 +219,5 @@ export {
     updatedStripePaymentSchema,
     subscriptionSchema,
     updateSubscriptionSchema,
+    pushNotificationSchema,
 }

@@ -7,10 +7,12 @@ import pushNotification from '../../services/subscription/pushNotification/pushN
 import showSubscriptions from '../../services/subscription/showSubscriptions/showSubscriptions';
 import showSubscription from '../../services/subscription/showSubscription/showSubscription';
 import updateSubscription from '../../services/subscription/updateSubscription/updateSubscription';
+import deleteSubscription from '../../services/subscription/deleteSubscription/deleteSubscription';
 const router = express.Router();
 router.post('/create-subscription',authenticationToken, globalValidator(subscriptionSchema), createSubscription);
 router.post('/push-notification', authenticationToken, globalValidator(pushNotificationSchema), pushNotification);
 router.get('/show-subscriptions', authenticationToken, showSubscriptions);
 router.get('/show-subscription/:id', authenticationToken, showSubscription);
-router.put('/update-subscription/:id', authenticationToken, globalValidator(updateSubscriptionSchema), updateSubscription); // Assuming updateSubscription is similar to showSubscription
+router.put('/update-subscription/:id', authenticationToken, globalValidator(updateSubscriptionSchema), updateSubscription); 
+router.delete('/delete-subscription/:id', authenticationToken, deleteSubscription);
 export default router;

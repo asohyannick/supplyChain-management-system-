@@ -1,8 +1,7 @@
 import * as Yup from 'yup';
 import { UserStatus } from '../serviceImplementators/user/user.interfac';
 import { Types } from 'mongoose';
-import { Currency, PaymentStatus } from '../serviceImplementators/payment/payment.interfac';
-import pushNotification from '../services/subscription/pushNotification/pushNotification';
+import { Currency, PaymentStatus } from '../enums/stripe/stripe.constants';
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -207,6 +206,28 @@ const pushNotificationSchema = Yup.object().shape({
     }).required('Subscription data is required'),
 });
 
+const stripePaymentValidationSchema = Yup.object().shape({
+    paymentIntentId: Yup.string()
+        .trim()
+        .optional(), // optional since it can be undefined
+
+    amount: Yup.number()
+        .required('Amount is required')
+        .positive('Amount must be a positive number'),
+
+    currency: Yup.string()
+        .trim()
+        .oneOf(Object.values(Currency), 'Invalid currency')
+        .default(Currency.EURO), // default value
+
+    status: Yup.string()
+        .trim()
+        .oneOf(Object.values(PaymentStatus), 'Invalid payment status')
+        .default(PaymentStatus.PENDING), // default value
+
+    lastUpdated: Yup.date()
+        .default(() => new Date())
+});
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -220,4 +241,5 @@ export {
     subscriptionSchema,
     updateSubscriptionSchema,
     pushNotificationSchema,
+    stripePaymentValidationSchema,
 }

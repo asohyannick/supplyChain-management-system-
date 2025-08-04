@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
-import { IPayment, Currency, PaymentStatus } from "../../serviceImplementators/payment/payment.interfac";
+import { IPayment } from "../../serviceImplementators/payment/payment.interfac";
+import { Currency, PaymentStatus } from '../../enums/stripe/stripe.constants';
 const stripeSchema: Schema = new Schema<IPayment>({
 paymentIntentId:{
     type: String,

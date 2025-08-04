@@ -1,18 +1,5 @@
- import { Document } from "mongoose";
-export enum Currency {
-    USD = 'usd',
-    EURO = 'eur',
-    GBP = 'gbp',
-    AUD = 'aud',
-    CAD = 'cad',
-    INR = 'inr'
-}
-export enum PaymentStatus {
-    PENDING = 'PENDING',
-    SUCCESS = 'SUCCESS',
-    REJECTED = 'REJECTED',
-    REFUNDED = 'REFUNDED',
-}
+import { Document } from "mongoose";
+import { Currency, PaymentStatus } from "../../enums/stripe/stripe.constants";
 export interface IPayment extends Document {
     paymentIntentId: string;
     amount: number;

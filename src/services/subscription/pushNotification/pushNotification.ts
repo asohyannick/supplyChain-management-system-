@@ -1,6 +1,7 @@
+import webPush from 'web-push';
+import 'dotenv/config';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import * as webPush from 'web-push';
 import Subscription from '../../../models/subscription/subscription.model';
 const vapidKeys = {
     public_key: process.env.VAPID_PUBLIC_KEY as string,

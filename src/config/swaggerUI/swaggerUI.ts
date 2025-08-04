@@ -138,6 +138,45 @@ const swaggerOptions = {
                     },
                     required: ['userId', 'deliveryDetails', 'timestamp', 'blockchainHash'],
                 },
+                StripePayment:{
+                    paymentIntentId:{
+                        type: 'string',
+                    },
+                    amount:{
+                        type: 'number',
+                    },
+                    currency:{
+                        type: 'string',
+                        enum: ['USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD', 'JPY'],
+                        default: 'USD',
+                    },
+                    status:{
+                        type: 'string',
+                    },
+                    lastUpdated:{
+                        type: 'string',
+                        format: 'date-time',
+                    },
+                    required:['paymentIntendId', 'amount', 'currency', 'status', 'lastUpdated'],
+                },
+                PayPalTransaction: {
+                    type: 'object',
+                    properties: {
+                        paymentId: {
+
+                            type: 'string',
+                        },
+                        amount: {       
+                            type: 'number',
+                        },
+                        status: {
+                            type: 'string',
+                            enum: ['PENDING', 'COMPLETED', 'FAILED'],
+                            default: 'PENDING',
+                        },
+                    },
+                    required: ['paymentId', 'amount', 'status'],
+                },
             },
         },
     },

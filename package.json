@@ -15,10 +15,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@google-cloud/functions-framework": "^4.0.0",
-    "@paypal/paypal-server-sdk": "^1.1.0",
+    "@types/paypal-rest-sdk": "^1.7.9",
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "compression": "^1.8.0",

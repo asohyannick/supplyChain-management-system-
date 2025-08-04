@@ -2,7 +2,7 @@ import PayPalTransaction from "../../models/paypal/paypal.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { PayPalPaymentStatus } from "../../enums/paypal/paypal.constants";
-import paypal from "../../config/paypalConfig/paypalConfig";
+import paypal from '../../config/paypalConfig/paypalConfig';
 const createPayment = async (req: Request, res: Response) => {
     const { amount } = req.body;
     // Ensure the amount is formatted correctly as a string with two decimal places
@@ -13,7 +13,7 @@ const createPayment = async (req: Request, res: Response) => {
             payment_method: 'paypal',
         },
         redirect_urls: {
-            return_url: process.env.PAYPAL_REDIRECT_URL as string, 
+            return_url: process.env.PAYPAL_REDIRECT_URL as string,
             cancel_url: process.env.PAYPAL_CANCEL_URL as string,
         },
         transactions: [{
@@ -33,7 +33,7 @@ const createPayment = async (req: Request, res: Response) => {
             // Save payment details to MongoDB
             const paymentDoc = new PayPalTransaction({
                 paymentId: payment.id,
-                amount: formattedAmount, 
+                amount: formattedAmount, // Ensure this matches the formatted amount
                 status: PayPalPaymentStatus.CREATED,
             });
             await paymentDoc.save();
@@ -59,7 +59,7 @@ const paymentSucceeded = async(req:Request, res:Response) => {
         transactions: [{
             amount: {
                 currency: 'USD',
-                total: amount as string  
+                total: amount as string  // Adjust as necessary
             },
         }],
     };
@@ -76,7 +76,7 @@ const paymentSucceeded = async(req:Request, res:Response) => {
         );
         return res.status(StatusCodes.OK).json({message: "Payment completed successfully", payment});
     }
-   });
+   })
 }
 
 export {

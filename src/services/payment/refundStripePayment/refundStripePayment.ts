@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import StripePayment from '../../../models/payment/payment.model';
 import Stripe from 'stripe';
 import mongoose from 'mongoose';
-import { PaymentStatus } from '../../../serviceImplementators/payment/payment.interfac';
+import { PaymentStatus } from '../../../enums/stripe/stripe.constants';
 const stripe = new Stripe(process.env.STRIPE_SECRET_API_KEY as string, {
     apiVersion: '2025-06-30.basil',
 });

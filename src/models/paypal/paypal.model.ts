@@ -6,12 +6,12 @@ const paypalSchema: Schema = new Schema<IPaypal>({
    type: String,
  },
  amount:{
-    type: Number,
+   type: Number,
  },
  status:{
-    type:String,
-    enum:Object.values(PayPalPaymentStatus),
-    default: PayPalPaymentStatus.PENDING,
+   type:String,
+   enum:Object.values(PayPalPaymentStatus),
+   default: PayPalPaymentStatus.PENDING,
  },
 }, {timestamps: true});
 const PayPalTransaction = model<IPaypal>('PayPalTransaction', paypalSchema);

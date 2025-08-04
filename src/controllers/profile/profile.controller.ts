@@ -1,8 +1,10 @@
 import express from 'express';
 import authenticationToken from '../../middleware/authentication/authenToken';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
-import { userProfileValidationSchema } from '../../utils/validator';
+import { updateUserProfileValidationSchema, userProfileValidationSchema } from '../../utils/validator';
 import createUserProfile from '../../services/profile/createProfile/createProfile';
+import updateUserProfile from '../../services/profile/updateProfile/updateProfile';
 const router = express.Router();
 router.post('/create-profile', authenticationToken, globalValidator(userProfileValidationSchema), createUserProfile);
+router.put('/update-profile/:id', authenticationToken, globalValidator(updateUserProfileValidationSchema), updateUserProfile);
 export default router;

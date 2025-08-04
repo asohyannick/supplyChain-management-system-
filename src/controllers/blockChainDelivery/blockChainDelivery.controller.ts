@@ -38,6 +38,7 @@ router.post('/create-delivery-logs',
     globalValidator(BlockChainDeliverySchema), 
     createBlockChainDeliveryLog
 );
+
 router.get('/show-delivery-logs', authenticationToken, showBlockChainDeliveryLogs);
 /**
  * @swagger

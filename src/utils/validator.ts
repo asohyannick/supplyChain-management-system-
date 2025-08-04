@@ -1,7 +1,12 @@
 import * as Yup from 'yup';
-import { UserStatus } from '../serviceImplementators/user/user.interfac';
+import { UserStatus } from '../enums/user/user.constants';
 import { Types } from 'mongoose';
 import { Currency, PaymentStatus } from '../enums/stripe/stripe.constants';
+import { DroneStatus } from '../enums/drone/drone.constants';
+const PASSWORD_REGEX = new RegExp(
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,})"
+);
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const userValidationSchema = Yup.object().shape({
     firstName: Yup.string()
         .required('First name is required')
@@ -19,13 +24,17 @@ const userValidationSchema = Yup.object().shape({
         .required('Email is required')
         .email('Email must be a valid email address')
         .max(100, 'Email cannot exceed 100 characters')
-        .trim(),
+        .trim().matches(EMAIL_REGEX, 'Email must be a valid email address'),
 
     password: Yup.string()
         .required('Password is required')
         .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Password cannot exceed 100 characters')
-        .trim(),
+        .trim()
+        .matches(PASSWORD_REGEX, {
+            message: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+            excludeEmptyString: true,
+        }),
 
     role: Yup.mixed<UserStatus>()
         .oneOf(Object.values(UserStatus), 'Invalid user status')
@@ -67,13 +76,18 @@ const updateUserValidationSchema = Yup.object().shape({
         .required('Email is required')
         .email('Email must be a valid email address')
         .max(100, 'Email cannot exceed 100 characters')
-        .trim(),
+        .trim()
+        .matches(EMAIL_REGEX, 'Email must be a valid email address'),
 
     password: Yup.string()
         .required('Password is required')
         .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Password cannot exceed 100 characters')
-        .trim(),
+        .trim()
+        .matches(PASSWORD_REGEX, {
+            message: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+            excludeEmptyString: true,
+        }),
     role: Yup.mixed<UserStatus>()
         .oneOf(Object.values(UserStatus), 'Invalid user status')
         .required('User status is required'),
@@ -228,6 +242,141 @@ const stripePaymentValidationSchema = Yup.object().shape({
     lastUpdated: Yup.date()
         .default(() => new Date())
 });
+
+const userProfileValidationSchema = Yup.object().shape({
+    userId: Yup.string().required("User ID is required."),
+    firstName: Yup.string()
+        .required("First name is required.")
+        .min(2, "First name must be at least 2 characters long.")
+        .max(50, "First name cannot exceed 50 characters."),
+    lastName: Yup.string()
+        .required("Last name is required.")
+        .min(2, "Last name must be at least 2 characters long.")
+        .max(50, "Last name cannot exceed 50 characters."),
+    email: Yup.string()
+        .required("Email is required.")
+        .email("Email is not valid."),
+    password: Yup.string()
+        .required("Password is required.")
+        .min(8, "Password must be at least 8 characters long."),
+    role: Yup.string()
+        .oneOf(Object.values(UserStatus), "Role must be one of the predefined values.")
+        .default(UserStatus.USER),
+    profilePicture: Yup.string()
+        .url("Profile picture must be a valid URL."),
+    bio: Yup.string()
+        .max(500, "Bio cannot exceed 500 characters."),
+    drones: Yup.array().of(
+        Yup.object().shape({
+            droneId: Yup.string().required("Drone ID is required."),
+            status: Yup.string()
+                .oneOf(Object.values(DroneStatus), "Status must be one of the predefined values.")
+                .default(DroneStatus.OFFLINE),
+            pickupTime: Yup.date().default(() => new Date()),
+            distance: Yup.number().min(0, "Distance must be a positive number."),
+            location: Yup.object().shape({
+                latitude: Yup.number()
+                    .required("Latitude is required.")
+                    .min(-90, "Latitude must be between -90 and 90.")
+                    .max(90, "Latitude must be between -90 and 90."),
+                longitude: Yup.number()
+                    .required("Longitude is required.")
+                    .min(-180, "Longitude must be between -180 and 180.")
+                    .max(180, "Longitude must be between -180 and 180."),
+            }),
+            address: Yup.object().shape({
+                street: Yup.string().required("Street is required."),
+                city: Yup.string().required("City is required."),
+                state: Yup.string().required("State is required."),
+                zipCode: Yup.string().required("Zip code is required."),
+                country: Yup.string().required("Country is required."),
+            }),
+            notes: Yup.string(),
+            packageDetails: Yup.array().of(
+                Yup.object().shape({
+                    weight: Yup.number()
+                        .required("Weight is required.")
+                        .min(0, "Weight must be a positive number."),
+                    dimensions: Yup.object().shape({
+                        length: Yup.number().required("Length is required.").min(0, "Length must be a positive number."),
+                        width: Yup.number().required("Width is required.").min(0, "Width must be a positive number."),
+                        height: Yup.number().required("Height is required.").min(0, "Height must be a positive number."),
+                    }),
+                    description: Yup.string().required("Description is required."),
+                })
+            ),
+            batteryLevel: Yup.number().min(0).max(100).required("Battery level is required."),
+        })
+    ),
+});
+
+const updateUserProfileValidationSchema = Yup.object().shape({
+    userId: Yup.string().required("User ID is required."),
+    firstName: Yup.string()
+        .required("First name is required.")
+        .min(2, "First name must be at least 2 characters long.")
+        .max(50, "First name cannot exceed 50 characters."),
+    lastName: Yup.string()
+        .required("Last name is required.")
+        .min(2, "Last name must be at least 2 characters long.")
+        .max(50, "Last name cannot exceed 50 characters."),
+    email: Yup.string()
+        .required("Email is required.")
+        .email("Email is not valid."),
+    password: Yup.string()
+        .required("Password is required.")
+        .min(8, "Password must be at least 8 characters long."),
+    role: Yup.string()
+        .oneOf(Object.values(UserStatus), "Role must be one of the predefined values.")
+        .default(UserStatus.USER),
+    profilePicture: Yup.string()
+        .url("Profile picture must be a valid URL."),
+    bio: Yup.string()
+        .max(500, "Bio cannot exceed 500 characters."),
+    drones: Yup.array().of(
+        Yup.object().shape({
+            droneId: Yup.string().required("Drone ID is required."),
+            status: Yup.string()
+                .oneOf(Object.values(DroneStatus), "Status must be one of the predefined values.")
+                .default(DroneStatus.OFFLINE),
+            pickupTime: Yup.date().default(() => new Date()),
+            distance: Yup.number().min(0, "Distance must be a positive number."),
+            location: Yup.object().shape({
+                latitude: Yup.number()
+                    .required("Latitude is required.")
+                    .min(-90, "Latitude must be between -90 and 90.")
+                    .max(90, "Latitude must be between -90 and 90."),
+                longitude: Yup.number()
+                    .required("Longitude is required.")
+                    .min(-180, "Longitude must be between -180 and 180.")
+                    .max(180, "Longitude must be between -180 and 180."),
+            }),
+            address: Yup.object().shape({
+                street: Yup.string().required("Street is required."),
+                city: Yup.string().required("City is required."),
+                state: Yup.string().required("State is required."),
+                zipCode: Yup.string().required("Zip code is required."),
+                country: Yup.string().required("Country is required."),
+            }),
+            notes: Yup.string(),
+            packageDetails: Yup.array().of(
+                Yup.object().shape({
+                    weight: Yup.number()
+                        .required("Weight is required.")
+                        .min(0, "Weight must be a positive number."),
+                    dimensions: Yup.object().shape({
+                        length: Yup.number().required("Length is required.").min(0, "Length must be a positive number."),
+                        width: Yup.number().required("Width is required.").min(0, "Width must be a positive number."),
+                        height: Yup.number().required("Height is required.").min(0, "Height must be a positive number."),
+                    }),
+                    description: Yup.string().required("Description is required."),
+                })
+            ),
+            batteryLevel: Yup.number().min(0).max(100).required("Battery level is required."),
+        })
+    ),
+});
+
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -242,4 +391,6 @@ export {
     updateSubscriptionSchema,
     pushNotificationSchema,
     stripePaymentValidationSchema,
+    userProfileValidationSchema,
+    updateUserProfileValidationSchema,
 }

@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
-import { DroneStatus, IDrone } from '../serviceImplementators/drone/drone.interfac';
+import { IDrone } from '../serviceImplementators/drone/drone.interfac';
+import { DroneStatus } from "../enums/drone/drone.constants";
 import Drone from "../models/drone/drone.model";
 export const getMockDroneData = async (): Promise<IDrone> => {
     const droneData: IDrone = new Drone({

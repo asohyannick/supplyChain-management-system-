@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
-import { DroneStatus, IDrone } from "../../serviceImplementators/drone/drone.interfac";
+import { IDrone } from "../../serviceImplementators/drone/drone.interfac";
+import { DroneStatus } from '../../enums/drone/drone.constants';
 const droneSchema: Schema = new Schema<IDrone>({
     userId: {
         type: Schema.ObjectId,

@@ -15,6 +15,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
+import profileRoute from './controllers/profile/profile.controller';
 import droneRoute from './controllers/drone/drone.controller';
 import stripePaymentRoute from './controllers/payment/payment.controller';
 import paypalPaymentRoute from './controllers/paypal/paypal.controller';
@@ -22,18 +23,14 @@ import blockChainDeliveryRoute from './controllers/blockChainDelivery/blockChain
 import subscriptionRoute from './controllers/subscription/subscription.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
-// Importing all the necessary modules and configurations
 const app: Application = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
-// Trust first proxy for rate limiting
 app.set('trust proxy', 1);
-// Setting up the Express application with necessary middlewares and configurations
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 setupSwagger(app);
-
 const initWebSocketServer = () => {
     wss.on('connection', (ws) => {
         console.log('New client connected successfully');
@@ -92,6 +89,7 @@ app.use(helmet());
 app.use(compression());
 // API Routes
 app.use(`/api/${API_VERSION}/user`, userRoute);
+app.use(`/api/${API_VERSION}/profile`, profileRoute);
 app.use(`/api/${API_VERSION}/drone`, droneRoute);
 app.use(`/api/${API_VERSION}/block-chain`, blockChainDeliveryRoute);
 app.use(`/api/${API_VERSION}/stripe-payment`, stripePaymentRoute);

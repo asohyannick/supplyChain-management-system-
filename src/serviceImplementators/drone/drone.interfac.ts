@@ -1,9 +1,5 @@
 import { Document, Types } from "mongoose";
-export enum DroneStatus {
-    AVAILABLE = 'Available',
-    BUSY = 'Busy',
-    OFFLINE = 'Offline',
-}
+import { DroneStatus } from "../../enums/drone/drone.constants";
 export interface IDrone extends Document {
     userId: Types.ObjectId,
     droneId: string;

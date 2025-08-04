@@ -2,7 +2,7 @@ import User from "../../../models/user/user.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
-import { UserStatus } from "../../../serviceImplementators/user/user.interfac";
+import { UserStatus } from "../../../enums/user/user.constants";
 const createAccount = async (req: Request, res: Response) => {
     const { firstName, lastName, email, password, biometricData } = req.body;
     try {

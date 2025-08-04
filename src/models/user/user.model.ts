@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from 'bcryptjs';
-import { IUser, UserStatus } from "../../serviceImplementators/user/user.interfac";
+import { IUser } from "../../serviceImplementators/user/user.interfac";
+import { UserStatus } from "../../enums/user/user.constants";
 const userSchema: Schema = new Schema<IUser>({
     firstName: {
         type: String,

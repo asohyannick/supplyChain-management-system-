@@ -1,7 +1,7 @@
 import User from "../../../models/user/user.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { UserStatus } from "../../../serviceImplementators/user/user.interfac";
+import { UserStatus } from "../../../enums/user/user.constants";
 const updateUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

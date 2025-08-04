@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { DroneStatus } from "../../../serviceImplementators/drone/drone.interfac";
+import { DroneStatus } from "../../../enums/drone/drone.constants";
 import Drone from "../../../models/drone/drone.model";
 import app from "../../../server";
 import http from 'http';

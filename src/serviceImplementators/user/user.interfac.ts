@@ -1,10 +1,5 @@
 import { Document } from "mongoose";
-export enum  UserStatus {
-    ADMIN = 'Admin',
-    DISPATCHER = 'Dispatcher',
-    DRONE_OPERATOR = 'Drone Operator',
-    USER = 'User',
-}
+import { UserStatus } from "../../enums/user/user.constants";
 export interface IUser extends Document {
     firstName: string;
     lastName: string;

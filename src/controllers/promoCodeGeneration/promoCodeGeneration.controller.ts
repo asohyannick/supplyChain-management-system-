@@ -3,11 +3,12 @@ import authenticationToken from '../../middleware/authentication/authenToken';
 import generatePromoCode from '../../services/promoCodeGeneration/generatePromoCode/generatePromoCode';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { promoCodeValidationSchema } from '../../utils/validator';
+import applyPromoCode from '../../services/promoCodeGeneration/applyPromoCode/applyPromoCode';
 const router = express.Router();
 // POST /generate-promo-code endpoint
 /**
  * @swagger
- * /api/v1/promode-code/generate-promo-code:
+ * /api/v1/promode-code/generate:
  *   post:
  *     summary: Generate a promo code
  *     tags: [Promo Codes]
@@ -47,5 +48,39 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/generate-promo-code', authenticationToken, globalValidator(promoCodeValidationSchema), generatePromoCode);
+router.post('/generate', authenticationToken, globalValidator(promoCodeValidationSchema), generatePromoCode);
+/**
+ * @swagger
+ * /api/v1/promo-code/apply:
+ *   post:
+ *     summary: Apply a promo code during checkout
+ *     tags: [Promo Codes]
+ *     security:
+ *       - bearerAuth: [] 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               promoCode:
+ *                 type: string
+ *                 example: "PROMO123"
+ *               orderId:
+ *                 type: string
+ *                 example: "607f1f77bcf86cd799439012"
+ *     responses:
+ *       200:
+ *         description: Promo code applied successfully
+ *       400:
+ *         description: Invalid promo code or request
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Promo code not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/apply', authenticationToken, applyPromoCode);
 export default router;

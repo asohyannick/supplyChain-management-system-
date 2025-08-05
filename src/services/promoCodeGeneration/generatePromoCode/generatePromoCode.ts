@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 import { PromoCodeGenerationConstants } from '../../../enums/promoCodeGeneration/promoCodeGeneration.constants';
 import PromoCode from '../../../models/promoCodeGeneration/promoCodeGeneration.model';
 import { StatusCodes } from 'http-status-codes';
+import sendPromoCodeEmail from '../sendPromoCodeEmail/sendPromoCodeEmail';
 const generatePromoCode = async(req: Request, res: Response): Promise<Response> => {
     try {
-        const { code, discountType, discountValue, expirationDate, requestedBy } = req.body; 
+        const { code, discountType, discountValue, expirationDate, requestedBy, clientEmail } = req.body; 
             const newPromoCode = new PromoCode({
             code,
             discountType: discountType || PromoCodeGenerationConstants.PERCENTAGE,
@@ -14,8 +15,9 @@ const generatePromoCode = async(req: Request, res: Response): Promise<Response> 
             isActive: true,
         });
         await newPromoCode.save();
+        await sendPromoCodeEmail(clientEmail, code, discountType, discountValue, expirationDate);
         return res.status(StatusCodes.CREATED).json({
-            message: 'Promo code generated successfully',
+            message: 'Promo code generated and sent successfully',
             promoCode: newPromoCode,
         });
     } catch (error) {

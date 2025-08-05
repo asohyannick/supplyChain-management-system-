@@ -177,6 +177,36 @@ const swaggerOptions = {
                     },
                     required: ['paymentId', 'amount', 'status'],
                 },
+                PromoCode: {
+                    type: 'object',
+                    properties: {
+                        code: {
+                            type: 'string',
+                            unique: true,
+                        }, 
+                        discountType: {
+                            type: 'string',
+                            enum: ['PERCENTAGE', 'FIXED'],
+                            default: 'PERCENTAGE',
+                        },
+                        discountValue: {    
+                            type: 'number',
+                        },
+                        expirationDate: {   
+                            type: 'string',
+                            format: 'date-time',
+                        },
+                        isActive: {
+                            type: 'boolean',
+                            default: true,
+                        },
+                        requestedBy: {
+                            type: 'string',
+                            format: 'objectId',
+                        },
+                    },
+                    required: ['code', 'discountType', 'discountValue', 'expirationDate', 'requestedBy'],
+                },
             },
         },
     },

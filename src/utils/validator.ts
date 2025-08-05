@@ -3,6 +3,7 @@ import { UserStatus } from '../enums/user/user.constants';
 import { Types } from 'mongoose';
 import { Currency, PaymentStatus } from '../enums/stripe/stripe.constants';
 import { DroneStatus } from '../enums/drone/drone.constants';
+import { PromoCodeGenerationConstants } from '../enums/promoCodeGeneration/promoCodeGeneration.constants';
 const PASSWORD_REGEX = new RegExp(
     "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,})"
 );
@@ -377,6 +378,33 @@ const updateUserProfileValidationSchema = Yup.object().shape({
     ),
 });
 
+const promoCodeValidationSchema = Yup.object().shape({
+    code: Yup.string()
+        .required('Promo code is required.')
+        .min(5, 'Promo code must be at least 5 characters long.')
+        .max(20, 'Promo code cannot exceed 20 characters.')
+        .matches(/^[A-Z0-9]+$/, 'Promo code must contain only uppercase letters and numbers.'),
+    discountType: Yup.string()
+        .oneOf(Object.values(PromoCodeGenerationConstants), 'Invalid discount type.')
+        .default(PromoCodeGenerationConstants.PERCENTAGE),
+    discountValue: Yup.number()
+        .required('Discount value is required.')
+        .min(0, 'Discount value must be at least 0.')
+        .test('is-valid-discount', 'Invalid discount value.', function(value) {
+            const { discountType } = this.parent;
+            if (discountType === PromoCodeGenerationConstants.PERCENTAGE) {
+                return value >= 0 && value <= 100; 
+            }
+            return value >= 0;
+        }),
+    expirationDate: Yup.date()
+        .required('Expiration date is required.')
+        .min(new Date(), 'Expiration date must be in the future.'),
+    requestedBy: Yup.string()
+        .required('Requested by is required.')
+        .length(24, 'Requested by must be a valid MongoDB ObjectId.'),
+});
+
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -393,4 +421,5 @@ export {
     stripePaymentValidationSchema,
     userProfileValidationSchema,
     updateUserProfileValidationSchema,
+    promoCodeValidationSchema
 }

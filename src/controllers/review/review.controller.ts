@@ -2,6 +2,7 @@ import express from 'express';
 import authenticationToken from '../../middleware/authentication/authenToken';
 import sentReview from '../../services/review/sentReview/sentReview';
 import updateReview from '../../services/review/updateReview/updateReview';
+import deleteReview from '../../services/review/deleteReview/deleteReview';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { reviewValidationSchema, updateReviewValidationSchema  } from '../../utils/validator';
 const router = express.Router();
@@ -107,5 +108,48 @@ router.post('/submit-review', authenticationToken, globalValidator(reviewValidat
  *               example: 'Review not found.'
  */
 router.put('/update-review/:id', authenticationToken, globalValidator(updateReviewValidationSchema), updateReview);
-
+/**
+ * @swagger
+ * /api/v1/review/delete-review/{id}:
+ *   delete:
+ *     summary: Delete a review
+ *     description: Endpoint to delete an existing review by ID.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: The ID of the review to delete.
+ *       - name: Authorization
+ *         in: header
+ *         required: true
+ *         type: string
+ *         description: Bearer token for authentication.
+ *     responses:
+ *       '200':
+ *         description: Review deleted successfully.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: 'Review deleted successfully.'
+ *       '401':
+ *         description: Unauthorized access.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: 'Unauthorized.'
+ *       '404':
+ *         description: Review not found.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: 'Review not found.'
+ */
+router.delete('/delete-review/:id', authenticationToken, deleteReview);
 export default router;

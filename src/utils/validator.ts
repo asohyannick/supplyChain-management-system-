@@ -453,5 +453,6 @@ export {
     userProfileValidationSchema,
     updateUserProfileValidationSchema,
     promoCodeValidationSchema,
-    reviewValidationSchema
+    reviewValidationSchema,
+    updateReviewValidationSchema,
 }

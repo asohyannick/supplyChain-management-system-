@@ -235,7 +235,25 @@ const swaggerOptions = {
                         },
                     },
                     required:['firstName', 'lastName', 'email', 'feature', 'date', 'usabilityRating', 'message'],
-                }
+                },
+                BiometricData:{
+                    type:'object',
+                    properties:{
+                       userId:{
+                         type: 'string',
+                       },
+                       fingerprint:{
+                         type: 'string',
+                       },
+                       facialRecognition:{
+                         type: 'string',
+                       },
+                       irisScan:{
+                         type:'string',
+                       },
+                    },
+                    required:['userId', 'fingerprint', 'facialRecognition', 'irisScan'],
+                },
             },
         },
     },

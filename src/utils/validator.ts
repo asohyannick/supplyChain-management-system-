@@ -36,14 +36,9 @@ const userValidationSchema = Yup.object().shape({
             message: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
             excludeEmptyString: true,
         }),
-
     role: Yup.mixed<UserStatus>()
         .oneOf(Object.values(UserStatus), 'Invalid user status')
         .required('User status is required'),
-    biometricData: Yup.string()
-        .required('Biometric data is required')
-        .matches(/^[A-Za-z0-9+/=]*$/, 'Invalid biometric data format'), 
-
 });
 
 const userLoginValidationSchema = Yup.object().shape({
@@ -436,6 +431,21 @@ const updateReviewValidationSchema = Yup.object().shape({
   usabilityRating: Yup.string().required('Usability rating is required'),
   message: Yup.string().required('Message is required'),
 });
+
+const biometricDataSchema = Yup.object().shape({
+    userId: Yup.string()
+        .required('User ID is required')
+        .test('is-valid-objectid', 'User ID must be a valid ObjectId', (value) => {
+            return Types.ObjectId.isValid(value);
+        }),
+    fingerprint: Yup.string()
+        .required('Fingerprint data is required'),
+    facialRecognition: Yup.string()
+        .required('Facial recognition data is required'),
+    irisScan: Yup.string()
+        .required('Iris scan data is required'),
+});
+
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -455,4 +465,5 @@ export {
     promoCodeValidationSchema,
     reviewValidationSchema,
     updateReviewValidationSchema,
+    biometricDataSchema,
 }

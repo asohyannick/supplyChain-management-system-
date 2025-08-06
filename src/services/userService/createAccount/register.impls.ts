@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
 import { UserStatus } from "../../../enums/user/user.constants";
 const createAccount = async (req: Request, res: Response) => {
-    const { firstName, lastName, email, password, biometricData } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     try {
         const qrCodeSecret = Math.random().toString(32).substring(2, 10); 
         const user = await User.findOne({ email });
@@ -22,7 +22,6 @@ const createAccount = async (req: Request, res: Response) => {
             email,
             password,
             role: UserStatus.USER,
-            biometricData,
             qrCodeSecret
         });
         await newUser.save();

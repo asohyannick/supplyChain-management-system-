@@ -15,6 +15,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import userRoute from './controllers/user/user.controller';
+import biometricRoute from './controllers/biometric/biometric.controller'
 import profileRoute from './controllers/profile/profile.controller';
 import droneRoute from './controllers/drone/drone.controller';
 import stripePaymentRoute from './controllers/payment/payment.controller';
@@ -90,6 +91,7 @@ app.use(helmet());
 app.use(compression());
 // API Routes
 app.use(`/api/${API_VERSION}/user`, userRoute);
+app.use(`/api/${API_VERSION}/biometric`, biometricRoute);
 app.use(`/api/${API_VERSION}/profile`, profileRoute);
 app.use(`/api/${API_VERSION}/drone`, droneRoute);
 app.use(`/api/${API_VERSION}/block-chain`, blockChainDeliveryRoute);

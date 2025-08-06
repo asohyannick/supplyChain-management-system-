@@ -207,6 +207,35 @@ const swaggerOptions = {
                     },
                     required: ['code', 'discountType', 'discountValue', 'expirationDate', 'requestedBy'],
                 },
+                Review:{
+                    type:'object',
+                    properties:{
+                        firstName: {
+                            type: 'string',
+                        },
+                        lastName: {
+                            type: 'string',
+                        },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                        },
+                        feature:{
+                            type:'string',
+                        },
+                        date:{
+                            type: 'string',
+                            format: 'date-time',
+                       },
+                       usabilityRating:{
+                            type:'string',
+                        },
+                        message:{
+                            type:'string',
+                        },
+                    },
+                    required:['firstName', 'lastName', 'email', 'feature', 'date', 'usabilityRating', 'message'],
+                }
             },
         },
     },

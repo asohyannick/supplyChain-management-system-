@@ -22,6 +22,7 @@ import paypalPaymentRoute from './controllers/paypal/paypal.controller';
 import promoCodeGenerationRoute from './controllers/promoCodeGeneration/promoCodeGeneration.controller';
 import blockChainDeliveryRoute from './controllers/blockChainDelivery/blockChainDelivery.controller';
 import subscriptionRoute from './controllers/subscription/subscription.controller';
+import reviewRoute from './controllers/review/review.controller';
 import notFoundRouteHandler from './middleware/customExceptions/notFound/notFoundRouteHandler';
 import serverSideError from './middleware/customExceptions/serverError/serverSideErrorHandler';
 const app: Application = express();
@@ -42,7 +43,6 @@ const initWebSocketServer = () => {
         });
         // Send initial drone data to the new client
         Drone.find().then((drones) => ws.send(JSON.stringify(drones)));
-
         setInterval(() => {
             const droneData = getMockDroneData();
             ws.send(JSON.stringify(droneData));
@@ -97,6 +97,7 @@ app.use(`/api/${API_VERSION}/stripe-payment`, stripePaymentRoute);
 app.use(`/api/${API_VERSION}/paypal-payment`, paypalPaymentRoute);
 app.use(`/api/${API_VERSION}/promo-code`, promoCodeGenerationRoute);
 app.use(`/api/${API_VERSION}/subscription`, subscriptionRoute);
+app.use(`/api/${API_VERSION}/review`, reviewRoute);
 app.use(notFoundRouteHandler);
 app.use(serverSideError);
 // This function initializes the database and starts the server

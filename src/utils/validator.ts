@@ -405,6 +405,37 @@ const promoCodeValidationSchema = Yup.object().shape({
         .length(24, 'Requested by must be a valid MongoDB ObjectId.'),
 });
 
+const reviewValidationSchema = Yup.object().shape({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .matches(EMAIL_REGEX).required('Email is required')
+    .test('unique', 'Email must be unique', async (value) => {
+      const exists = await Review.exists({ email: value });
+      return !exists;
+    }),
+  feature: Yup.string().required('Feature is required'),
+  date: Yup.date().default(() => new Date()),
+  usabilityRating: Yup.string().required('Usability rating is required'),
+  message: Yup.string().required('Message is required'),
+});
+
+const updateReviewValidationSchema = Yup.object().shape({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .matches(EMAIL_REGEX).required('Email is required')
+    .test('unique', 'Email must be unique', async (value) => {
+      const exists = await Review.exists({ email: value });
+      return !exists;
+    }),
+  feature: Yup.string().required('Feature is required'),
+  date: Yup.date().default(() => new Date()),
+  usabilityRating: Yup.string().required('Usability rating is required'),
+  message: Yup.string().required('Message is required'),
+});
 export {
     userValidationSchema,
     userLoginValidationSchema,
@@ -421,5 +452,6 @@ export {
     stripePaymentValidationSchema,
     userProfileValidationSchema,
     updateUserProfileValidationSchema,
-    promoCodeValidationSchema
+    promoCodeValidationSchema,
+    reviewValidationSchema
 }

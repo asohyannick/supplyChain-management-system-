@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
 import { UserStatus } from "../../../enums/user/user.constants";
 const createAccount = async (req: Request, res: Response) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password , role} = req.body;
     try {
         const qrCodeSecret = Math.random().toString(32).substring(2, 10); 
         const user = await User.findOne({ email });
@@ -16,12 +16,31 @@ const createAccount = async (req: Request, res: Response) => {
                 message: "User already exist!",
             });
         }
+        let userRole = UserStatus.USER; 
+        if (role) {
+            if ([UserStatus.ADMIN,UserStatus.DISPATCHER,UserStatus.DRONE_OPERATOR].includes(role)) {
+                const requesterRole = req.user?.role; 
+                if (requesterRole !== UserStatus.ADMIN && requesterRole !== UserStatus.DISPATCHER && requesterRole !== UserStatus.DRONE_OPERATOR) {
+                    return res.status(StatusCodes.FORBIDDEN).json({
+                        success: false,
+                        message: "You do not have permission to assign this role.",
+                    });
+                }
+                userRole = role; 
+            } else {
+                return res.status(StatusCodes.BAD_REQUEST).json({
+                    success: false,
+                    message: "Invalid role specified.",
+                });
+            }
+        }
+
         const newUser = new User({
             firstName,
             lastName,
             email,
             password,
-            role: UserStatus.USER,
+            role: userRole,
             qrCodeSecret
         });
         await newUser.save();

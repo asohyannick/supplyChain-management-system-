@@ -12,9 +12,10 @@ import requestAccessToken from '../../services/userService/refreshAccessToken/re
 import resetPassword from '../../services/userService/resetPassword/resetPassword.impl';
 import forgotPassword from '../../services/userService/forgotPassword/forgotPassword.impl';
 import firebaseLogin from '../../services/userService/firebaseAuth/firebaseLogin';
-import facebookAuth from '../../services/userService/facebookAuth/facebookAuth';
 import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../services/userService/gitHubAuth/gitHubAuthLogin';
 import generateQRCode from '../../services/userService/generateQRCode/generateQRCode';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
 const router = express.Router();
 /**
  * @swagger
@@ -35,7 +36,6 @@ const router = express.Router();
  *         description: Validation error
  */
 router.post('/create-account', globalValidator(userValidationSchema), createAccount);
-
 /**
  * @swagger
  * /api/v1/user/generate-qr-code/{id}:
@@ -333,7 +333,7 @@ router.post('/reset-password/:token', resetPassword);
  *       200:
  *         description: A list of users
  */
-router.get('/show-users', showUsers);
+router.get('/show-users', authorizeRoles(UserStatus.ADMIN), showUsers);
 
 /**
  * @swagger
@@ -354,7 +354,7 @@ router.get('/show-users', showUsers);
  *       404:
  *         description: User not found
  */
-router.get('/show-user/:id', showUser);
+router.get('/show-user/:id',authorizeRoles(UserStatus.ADMIN), showUser);
 
 /**
  * @swagger
@@ -403,5 +403,4 @@ router.put('/update-account/:id', globalValidator(updateUserValidationSchema), u
  *         description: User not found
  */
 router.delete('/delete-account/:id', deleteUser);
-router.post('/auth/facebook', facebookAuth);
 export default router;

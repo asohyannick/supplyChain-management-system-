@@ -8,11 +8,221 @@ import editAndUpdateStripePayment from '../../services/payment/updateStripePayme
 import deleteStripePayment from '../../services/payment/deleteStripePayment/deleteStripePayment';
 import refundStripePayment from '../../services/payment/refundStripePayment/refundStripePayment';
 import processStripePayment from '../../services/payment/processStripePayment/processStripePayment';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
+
 const router = express.Router();
-router.post('/create-payment', authenticationToken, globalValidator(stripePaymentSchema), processStripePayment);
-router.post('/refund-payment/:id', authenticationToken, refundStripePayment);
-router.get('/show-payments', authenticationToken, showStripePayments);
-router.get('/show-payment/:id', authenticationToken, showStripePayment);
-router.put('/update-payment/:id', authenticationToken, globalValidator(updatedStripePaymentSchema), editAndUpdateStripePayment);
-router.delete('/delete-payment/:id', authenticationToken, deleteStripePayment);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     StripePayment:
+ *       type: object
+ *       properties:
+ *         paymentIntentId:
+ *           type: string  # Unique identifier for the payment intent
+ *         amount:
+ *           type: number  # Amount for the payment
+ *         currency:
+ *           type: string  # Currency type
+ *           enum: ['USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD', 'JPY']  # Allowed currency values
+ *           default: 'USD'  # Default currency
+ *         status:
+ *           type: string  # Status of the payment
+ *         lastUpdated:
+ *           type: string  # Last updated timestamp
+ *           format: date-time  # Format of the timestamp
+ *       required:
+ *         - paymentIntentId  # Required field for payment intent ID
+ *         - amount  # Required field for amount
+ *         - currency  # Required field for currency
+ *         - status  # Required field for status
+ *         - lastUpdated  # Required field for last updated timestamp
+ */
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/create-payment:
+ *   post:
+ *     summary: Create a new payment
+ *     description: This endpoint processes a new payment.
+ *     security:
+ *       - bearerAuth: []  # Security scheme for authentication
+ *     requestBody:
+ *       required: true  # Indicates that the request body is mandatory
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/StripePayment'  # Reference to the StripePayment schema
+ *     responses:
+ *       '200':
+ *         description: Payment created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Payment processed successfully
+ *       '400':
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Invalid payment data
+ */
+
+router.post('/create-payment', 
+    authenticationToken,  // Middleware for authentication
+    authorizeRoles(UserStatus.USER),  // Middleware for role-based access control
+    globalValidator(stripePaymentSchema),  // Middleware for validating the request body
+    processStripePayment  // Service for processing the payment
+);
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/refund-payment/{id}:
+ *   post:
+ *     summary: Refund a payment
+ *     description: This endpoint refunds a specified payment.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the payment to be refunded
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Payment refunded successfully
+ *       '404':
+ *         description: Payment not found
+ */
+
+router.post('/refund-payment/:id',
+    authenticationToken,
+    authorizeRoles(UserStatus.USER), 
+    refundStripePayment  // Service for refunding the payment
+);
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/show-payments:
+ *   get:
+ *     summary: Retrieve all payments
+ *     description: This endpoint retrieves a list of all payments.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: List of payments
+ *       '403':
+ *         description: Forbidden
+ */
+
+router.get('/show-payments', 
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    showStripePayments  // Service for showing all payments
+);
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/show-payment/{id}:
+ *   get:
+ *     summary: Retrieve a specific payment
+ *     description: This endpoint retrieves details of a specific payment.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the payment to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Payment details retrieved successfully
+ *       '404':
+ *         description: Payment not found
+ */
+
+router.get('/show-payment/:id', 
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    showStripePayment  // Service for showing a specific payment
+);
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/update-payment/{id}:
+ *   put:
+ *     summary: Update a payment
+ *     description: This endpoint updates the details of a specified payment.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the payment to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/StripePayment'  # Reference to the updated payment schema
+ *     responses:
+ *       '200':
+ *         description: Payment updated successfully
+ *       '400':
+ *         description: Bad Request
+ */
+
+router.put('/update-payment/:id',
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    globalValidator(updatedStripePaymentSchema),  // Middleware for validating the updated payment
+    editAndUpdateStripePayment  // Service for updating the payment
+);
+
+/**
+ * @swagger
+ * /api/v1/stripe-payment/delete-payment/{id}:
+ *   delete:
+ *     summary: Delete a payment
+ *     description: This endpoint deletes a specified payment.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the payment to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Payment deleted successfully
+ *       '404':
+ *         description: Payment not found
+ */
+
+router.delete('/delete-payment/:id', 
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    deleteStripePayment  // Service for deleting the payment
+);
+
 export default router;

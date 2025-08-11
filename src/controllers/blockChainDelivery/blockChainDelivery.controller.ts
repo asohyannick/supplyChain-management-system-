@@ -7,6 +7,8 @@ import showBlockChainDeliveryLogs from '../../services/blockChainDelivery/showBl
 import showBlockChainDeliveryLog from '../../services/blockChainDelivery/showBlockChainDelivery/showBlockChainDeliveryLog';
 import updateBlockChainDeliveryLog from '../../services/blockChainDelivery/updateBlockChainDeliveryLog/updateBlockChainDeliveryLog';
 import deleteBlockChainDeliveryLog from '../../services/blockChainDelivery/deleteBlockChainDeliveryLog/deleteBlockChainDeliveryLog';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
 const router = express.Router();
 /**
  * @swagger
@@ -35,11 +37,12 @@ const router = express.Router();
  */
 router.post('/create-delivery-logs', 
     authenticationToken, 
+    authorizeRoles(UserStatus.USER),
     globalValidator(BlockChainDeliverySchema), 
     createBlockChainDeliveryLog
 );
 
-router.get('/show-delivery-logs', authenticationToken, showBlockChainDeliveryLogs);
+router.get('/show-delivery-logs', authenticationToken, authorizeRoles(UserStatus.USER), showBlockChainDeliveryLogs);
 /**
  * @swagger
  * /api/v1/block-chain/show-delivery-log/{id}:
@@ -109,7 +112,7 @@ router.get('/show-delivery-logs', authenticationToken, showBlockChainDeliveryLog
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.get('/show-delivery-log/:id', authenticationToken, showBlockChainDeliveryLog);
+router.get('/show-delivery-log/:id', authenticationToken, authorizeRoles(UserStatus.USER), showBlockChainDeliveryLog);
 /**
  * @swagger
  * /api/v1/block-chain/update-delivery-log/{id}:
@@ -204,7 +207,7 @@ router.get('/show-delivery-log/:id', authenticationToken, showBlockChainDelivery
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.put('/update-delivery-log/:id', authenticationToken, globalValidator(updateBlockChainDeliverySchema), updateBlockChainDeliveryLog);
+router.put('/update-delivery-log/:id', authenticationToken, authorizeRoles(UserStatus.USER), globalValidator(updateBlockChainDeliverySchema), updateBlockChainDeliveryLog);
 /**
  * @swagger
  * /api/v1/block-chain/delete-delivery-log/{id}:
@@ -263,5 +266,5 @@ router.put('/update-delivery-log/:id', authenticationToken, globalValidator(upda
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.delete('/delete-delivery-log/:id', authenticationToken, deleteBlockChainDeliveryLog);
+router.delete('/delete-delivery-log/:id', authenticationToken, authorizeRoles(UserStatus.USER), deleteBlockChainDeliveryLog);
 export default router;

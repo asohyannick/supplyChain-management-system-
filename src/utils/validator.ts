@@ -4,6 +4,7 @@ import { Types } from 'mongoose';
 import { Currency, PaymentStatus } from '../enums/stripe/stripe.constants';
 import { DroneStatus } from '../enums/drone/drone.constants';
 import { PromoCodeGenerationConstants } from '../enums/promoCodeGeneration/promoCodeGeneration.constants';
+import Review from '../models/review/review.model';
 const PASSWORD_REGEX = new RegExp(
     "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!.@#$%^&*])(?=.{8,})"
 );

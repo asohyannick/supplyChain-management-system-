@@ -109,8 +109,8 @@ const startServer = async () => {
             app.listen(APP_PORT, () => {
                 console.log(`Server is called ${APP_NAME}
                 running on ${APP_HOST}
-                on /api/ ${API_VERSION}
-                on port: ${APP_PORT}...`
+                on /api/${API_VERSION}
+                on port:${APP_PORT}...`
                 );
             });
     } catch (error: unknown) {

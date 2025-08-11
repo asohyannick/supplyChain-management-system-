@@ -8,6 +8,8 @@ import showDroneServices from '../../services/droneService/showDroneServices/sho
 import showDroneService from '../../services/droneService/showDroneService/showDroneService';
 import updateDroneService from '../../services/droneService/updateDroneService/updateDroneService';
 import deleteDroneService from '../../services/droneService/deleteDroneService/deleteDroneService';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
 const router = express.Router(); 
 /**
  * @swagger
@@ -122,6 +124,7 @@ router.post(
     '/create-drone',
     globalValidator(droneSchema),
     authenticationToken,
+    authorizeRoles(UserStatus.DRONE_OPERATOR),
     createDroneService
 );
 /**
@@ -218,7 +221,11 @@ router.post(
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.get('/show-drones', authenticationToken, showDroneServices);
+router.get('/show-drones', 
+    authenticationToken,   
+    authorizeRoles(UserStatus.DRONE_OPERATOR),
+    showDroneServices
+);
 /**
  * @swagger
  * /api/v1/drone/show-drone/{id}:
@@ -330,7 +337,11 @@ router.get('/show-drones', authenticationToken, showDroneServices);
  *                   example: "An unexpected error occurred."
  */
 
-router.get('/show-drone/:id', authenticationToken, showDroneService);
+router.get('/show-drone/:id', 
+    authenticationToken,
+    authorizeRoles(UserStatus.DRONE_OPERATOR),
+    showDroneService
+);
 /**
  * @swagger
  * /api/v1/drone/ai-drone-optimization:
@@ -393,7 +404,11 @@ router.get('/show-drone/:id', authenticationToken, showDroneService);
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.get('/ai-drone-optimization', authenticationToken, droneWeatherMapOptimization);
+router.get('/ai-drone-optimization', 
+    authenticationToken, 
+    authorizeRoles(UserStatus.DRONE_OPERATOR),    
+    droneWeatherMapOptimization
+);
 /**
  * @swagger
  * /api/v1/drone/update-drone/{id}:
@@ -530,7 +545,12 @@ router.get('/ai-drone-optimization', authenticationToken, droneWeatherMapOptimiz
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.put('/update-drone/:id', authenticationToken, globalValidator(updateDroneSchema), updateDroneService);
+router.put('/update-drone/:id',
+    authenticationToken, 
+    authorizeRoles(UserStatus.DRONE_OPERATOR),
+    globalValidator(updateDroneSchema), 
+    updateDroneService
+);
 /**
  * @swagger
  * /api/v1/drone/delete-drone/{id}:
@@ -591,5 +611,9 @@ router.put('/update-drone/:id', authenticationToken, globalValidator(updateDrone
  *                   type: string
  *                   example: "An unexpected error occurred."
  */
-router.delete('/delete-drone/:id', authenticationToken, deleteDroneService);
+router.delete('/delete-drone/:id',
+ authenticationToken, 
+ authorizeRoles(UserStatus.DRONE_OPERATOR),
+ deleteDroneService
+);
 export default router;

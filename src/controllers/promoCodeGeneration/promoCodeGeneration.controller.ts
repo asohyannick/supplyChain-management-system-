@@ -4,6 +4,8 @@ import generatePromoCode from '../../services/promoCodeGeneration/generatePromoC
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { promoCodeValidationSchema } from '../../utils/validator';
 import applyPromoCode from '../../services/promoCodeGeneration/applyPromoCode/applyPromoCode';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
 const router = express.Router();
 // POST /generate-promo-code endpoint
 /**
@@ -48,7 +50,12 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/generate', authenticationToken, globalValidator(promoCodeValidationSchema), generatePromoCode);
+router.post('/generate', 
+    authenticationToken,
+    authorizeRoles(UserStatus.ADMIN),
+    globalValidator(promoCodeValidationSchema),
+    generatePromoCode
+);
 /**
  * @swagger
  * /api/v1/promo-code/apply:
@@ -82,5 +89,9 @@ router.post('/generate', authenticationToken, globalValidator(promoCodeValidatio
  *       500:
  *         description: Internal server error
  */
-router.post('/apply', authenticationToken, applyPromoCode);
+router.post('/apply', 
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    applyPromoCode
+);
 export default router;

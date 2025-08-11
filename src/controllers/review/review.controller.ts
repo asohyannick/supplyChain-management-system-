@@ -5,6 +5,8 @@ import updateReview from '../../services/review/updateReview/updateReview';
 import deleteReview from '../../services/review/deleteReview/deleteReview';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import { reviewValidationSchema, updateReviewValidationSchema  } from '../../utils/validator';
+import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
+import { UserStatus } from '../../enums/user/user.constants';
 const router = express.Router();
 /**
  * @swagger
@@ -49,7 +51,12 @@ const router = express.Router();
  *               type: string
  *               example: 'Unauthorized.'
  */
-router.post('/submit-review', authenticationToken, globalValidator(reviewValidationSchema), sentReview);
+router.post('/submit-review', 
+    authenticationToken, 
+    authorizeRoles(UserStatus.USER),
+    globalValidator(reviewValidationSchema), 
+    sentReview
+);
 
 /**
  * @swagger
@@ -107,7 +114,12 @@ router.post('/submit-review', authenticationToken, globalValidator(reviewValidat
  *               type: string
  *               example: 'Review not found.'
  */
-router.put('/update-review/:id', authenticationToken, globalValidator(updateReviewValidationSchema), updateReview);
+router.put('/update-review/:id',
+    authenticationToken, 
+    authorizeRoles(UserStatus.USER),
+    globalValidator(updateReviewValidationSchema),
+    updateReview
+);
 /**
  * @swagger
  * /api/v1/review/delete-review/{id}:
@@ -151,5 +163,9 @@ router.put('/update-review/:id', authenticationToken, globalValidator(updateRevi
  *               type: string
  *               example: 'Review not found.'
  */
-router.delete('/delete-review/:id', authenticationToken, deleteReview);
+router.delete('/delete-review/:id',
+    authenticationToken,
+    authorizeRoles(UserStatus.USER),
+    deleteReview
+);
 export default router;

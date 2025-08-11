@@ -1,6 +1,7 @@
 import { Application } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express';
+import { DroneStatus } from "../../enums/drone/drone.constants";
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -39,16 +40,133 @@ const swaggerOptions = {
                         refreshToken: {
                             type: 'string',
                         },
-                        biometricData: {
-                            type: 'string',
-                        },
                         qrCodeSecret: {
                             type: 'string',
                         },
                     },
-                    required: ['firstName', 'lastName', 'email', 'password', 'biometricData' ,'role'],
+                    required: ['firstName', 'lastName', 'email', 'password', 'role'],
                 },
-                Drone: { 
+                Profile: {
+                    type: 'object',
+                    properties: {
+                        userId: {
+                            type: 'string',
+                            description: 'MongoDB ObjectId of the user',
+                        },
+                        profilePicture: {
+                            type: 'string',
+                        },
+                        bio: {
+                            type: 'string',
+                        },
+                        firstName: {
+                            type: 'string',
+                        },
+                        lastName: {
+                            type: 'string',
+                        },
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                        },
+                        password: {
+                            type: 'string',
+                        },
+                        role: {
+                            type: 'string',
+                            enum: ['Admin', 'Dispatcher', 'Drone Operator', 'User'],
+                        },
+                        drones: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    droneId: {
+                                        type: 'string',
+                                    },
+                                    status: {
+                                        type: 'string',
+                                        enum: Object.values(DroneStatus),
+                                    },
+                                    pickupTime: {
+                                        type: 'string',
+                                        format: 'date-time',
+                                    },
+                                    distance: {
+                                        type: 'number',
+                                    },
+                                    location: {
+                                        type: 'object',
+                                        properties: {
+                                            latitude: {
+                                                type: 'number',
+                                            },
+                                            longitude: {
+                                                type: 'number',
+                                            },
+                                        },
+                                    },
+                                    address: {
+                                        type: 'object',
+                                        properties: {
+                                            street: {
+                                                type: 'string',
+                                            },
+                                            city: {
+                                                type: 'string',
+                                            },
+                                            state: {
+                                                type: 'string',
+                                            },
+                                            zipCode: {
+                                                type: 'string',
+                                            },
+                                            country: {
+                                                type: 'string',
+                                            },
+                                        },
+                                    },
+                                    notes: {
+                                        type: 'string',
+                                    },
+                                    packageDetails: {
+                                        type: 'array',
+                                        items: {
+                                            type: 'object',
+                                            properties: {
+                                                weight: {
+                                                    type: 'number',
+                                                },
+                                                dimensions: {
+                                                    type: 'object',
+                                                    properties: {
+                                                        length: {
+                                                            type: 'number',
+                                                        },
+                                                        width: {
+                                                            type: 'number',
+                                                        },
+                                                        height: {
+                                                            type: 'number',
+                                                        },
+                                                    },
+                                                },
+                                                description: {
+                                                    type: 'string',
+                                                },
+                                            },
+                                        },
+                                    },
+                                    batteryLevel: {
+                                        type: 'number',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    required: ['userId', 'firstName', 'lastName', 'email', 'password', 'role', 'drones'],
+                },
+                Drone: {
                     type: 'object',
                     properties: {
                         userId: {
@@ -116,48 +234,48 @@ const swaggerOptions = {
                             },
                         },
                     },
-                    required: ['userId', 'pickupTime', 'address', 'packageDetails'], 
+                    required: ['userId', 'pickupTime', 'address', 'packageDetails'],
                 },
                 BlockChainDelivery: {
                     type: 'object',
-                    properties: {   
+                    properties: {
                         userId: {
                             type: 'string',
-                            format: 'objectId', 
+                            format: 'objectId',
                         },
                         deliveryDetails: {
-                            type: 'string',     
-                        },  
+                            type: 'string',
+                        },
                         timestamp: {
                             type: 'string',
                             format: 'date-time',
-                        },  
+                        },
                         blockchainHash: {
                             type: 'string',
                         },
                     },
                     required: ['userId', 'deliveryDetails', 'timestamp', 'blockchainHash'],
                 },
-                StripePayment:{
-                    paymentIntentId:{
+                StripePayment: {
+                    paymentIntentId: {
                         type: 'string',
                     },
-                    amount:{
+                    amount: {
                         type: 'number',
                     },
-                    currency:{
+                    currency: {
                         type: 'string',
                         enum: ['USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD', 'JPY'],
                         default: 'USD',
                     },
-                    status:{
+                    status: {
                         type: 'string',
                     },
-                    lastUpdated:{
+                    lastUpdated: {
                         type: 'string',
                         format: 'date-time',
                     },
-                    required:['paymentIntendId', 'amount', 'currency', 'status', 'lastUpdated'],
+                    required: ['paymentIntendId', 'amount', 'currency', 'status', 'lastUpdated'],
                 },
                 PayPalTransaction: {
                     type: 'object',
@@ -166,7 +284,7 @@ const swaggerOptions = {
 
                             type: 'string',
                         },
-                        amount: {       
+                        amount: {
                             type: 'number',
                         },
                         status: {
@@ -183,16 +301,16 @@ const swaggerOptions = {
                         code: {
                             type: 'string',
                             unique: true,
-                        }, 
+                        },
                         discountType: {
                             type: 'string',
                             enum: ['PERCENTAGE', 'FIXED'],
                             default: 'PERCENTAGE',
                         },
-                        discountValue: {    
+                        discountValue: {
                             type: 'number',
                         },
-                        expirationDate: {   
+                        expirationDate: {
                             type: 'string',
                             format: 'date-time',
                         },
@@ -207,9 +325,9 @@ const swaggerOptions = {
                     },
                     required: ['code', 'discountType', 'discountValue', 'expirationDate', 'requestedBy'],
                 },
-                Review:{
-                    type:'object',
-                    properties:{
+                Review: {
+                    type: 'object',
+                    properties: {
                         firstName: {
                             type: 'string',
                         },
@@ -220,39 +338,68 @@ const swaggerOptions = {
                             type: 'string',
                             format: 'email',
                         },
-                        feature:{
-                            type:'string',
+                        feature: {
+                            type: 'string',
                         },
-                        date:{
+                        date: {
                             type: 'string',
                             format: 'date-time',
-                       },
-                       usabilityRating:{
-                            type:'string',
                         },
-                        message:{
-                            type:'string',
+                        usabilityRating: {
+                            type: 'string',
+                        },
+                        message: {
+                            type: 'string',
                         },
                     },
-                    required:['firstName', 'lastName', 'email', 'feature', 'date', 'usabilityRating', 'message'],
+                    required: ['firstName', 'lastName', 'email', 'feature', 'date', 'usabilityRating', 'message'],
                 },
-                BiometricData:{
-                    type:'object',
-                    properties:{
-                       userId:{
-                         type: 'string',
-                       },
-                       fingerprint:{
-                         type: 'string',
-                       },
-                       facialRecognition:{
-                         type: 'string',
-                       },
-                       irisScan:{
-                         type:'string',
-                       },
+                BiometricData: {
+                    type: 'object',
+                    properties: {
+                        userId: {
+                            type: 'string',
+                        },
+                        fingerprint: {
+                            type: 'string',
+                        },
+                        facialRecognition: {
+                            type: 'string',
+                        },
+                        irisScan: {
+                            type: 'string',
+                        },
                     },
-                    required:['userId', 'fingerprint', 'facialRecognition', 'irisScan'],
+                    required: ['userId', 'fingerprint', 'facialRecognition', 'irisScan'],
+                },
+                Subscription: {
+                    type: 'object',
+                    properties: {
+                        userId: {
+                            type: 'string',
+                            description: 'MongoDB ObjectId of the user',
+                        },
+                        subscription: {
+                            type: 'object',
+                            properties: {
+                                endpoint: {
+                                    type: 'string',
+                                },
+                                keys: {
+                                    type: 'object',
+                                    properties: {
+                                        p256dh: {
+                                            type: 'string',
+                                        },
+                                        auth: {
+                                            type: 'string',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    required: ['userId', 'subscription'],
                 },
             },
         },

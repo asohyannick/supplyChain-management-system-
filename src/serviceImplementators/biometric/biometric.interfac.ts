@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 export interface IBiometricData extends Document {
     userId: Types.ObjectId;
-    fingerprint: string;
-    facialRecognition: string;
-    irisScan: string;
+    fingerprintData: string;
+    facialRecognitionData: string;
+    irisScanData: string;
 }

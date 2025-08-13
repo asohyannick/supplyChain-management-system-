@@ -5,13 +5,13 @@ userId:{
     type: Schema.ObjectId,
     ref: 'User',
 },
-fingerprint:{
+fingerprintData:{
     type: String,
 },
-facialRecognition:{
+facialRecognitionData:{
     type: String,
 },
-irisScan:{
+irisScanData:{
     type: String,
 },
 }, { timestamps: true});

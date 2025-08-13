@@ -5,36 +5,14 @@ import { createPayment, paymentSucceeded } from "../../services/paypalPayment/pa
 import { stripePaymentValidationSchema } from '../../utils/validator';
 import authorizeRoles from "../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken";
 import { UserStatus } from "../../enums/user/user.constants";
-
 const router = express.Router();
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     PayPalTransaction:
- *       type: object
- *       properties:
- *         paymentId:
- *           type: string  # Unique identifier for the PayPal payment
- *         amount:
- *           type: number  # Amount for the payment
- *         status:
- *           type: string  # Status of the payment
- *           enum: ['PENDING', 'COMPLETED', 'FAILED']  # Allowed status values
- *           default: 'PENDING'  # Default status
- *       required:
- *         - paymentId  # Required field for payment ID
- *         - amount  # Required field for amount
- *         - status  # Required field for status
- */
-
 /**
  * @swagger
  * /api/v1/paypal-payment/create:
  *   post:
  *     summary: Create a PayPal payment
  *     description: This endpoint initiates a new PayPal payment.
+ *     tags: [Paypal Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     requestBody:
@@ -79,6 +57,7 @@ router.post("/create",
  *   get:
  *     summary: Handle successful PayPal payment
  *     description: This endpoint processes the successful completion of a PayPal payment.
+ *     tags: [Paypal Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     responses:

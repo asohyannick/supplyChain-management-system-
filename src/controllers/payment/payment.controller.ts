@@ -15,38 +15,11 @@ const router = express.Router();
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     StripePayment:
- *       type: object
- *       properties:
- *         paymentIntentId:
- *           type: string  # Unique identifier for the payment intent
- *         amount:
- *           type: number  # Amount for the payment
- *         currency:
- *           type: string  # Currency type
- *           enum: ['USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD', 'JPY']  # Allowed currency values
- *           default: 'USD'  # Default currency
- *         status:
- *           type: string  # Status of the payment
- *         lastUpdated:
- *           type: string  # Last updated timestamp
- *           format: date-time  # Format of the timestamp
- *       required:
- *         - paymentIntentId  # Required field for payment intent ID
- *         - amount  # Required field for amount
- *         - currency  # Required field for currency
- *         - status  # Required field for status
- *         - lastUpdated  # Required field for last updated timestamp
- */
-
-/**
- * @swagger
  * /api/v1/stripe-payment/create-payment:
  *   post:
  *     summary: Create a new payment
  *     description: This endpoint processes a new payment.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     requestBody:
@@ -91,6 +64,7 @@ router.post('/create-payment',
  *   post:
  *     summary: Refund a payment
  *     description: This endpoint refunds a specified payment.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -119,6 +93,7 @@ router.post('/refund-payment/:id',
  *   get:
  *     summary: Retrieve all payments
  *     description: This endpoint retrieves a list of all payments.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -140,6 +115,7 @@ router.get('/show-payments',
  *   get:
  *     summary: Retrieve a specific payment
  *     description: This endpoint retrieves details of a specific payment.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -168,6 +144,7 @@ router.get('/show-payment/:id',
  *   put:
  *     summary: Update a payment
  *     description: This endpoint updates the details of a specified payment.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -203,6 +180,7 @@ router.put('/update-payment/:id',
  *   delete:
  *     summary: Delete a payment
  *     description: This endpoint deletes a specified payment.
+ *     tags: [Stripe Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:

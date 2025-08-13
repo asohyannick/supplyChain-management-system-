@@ -22,7 +22,7 @@ const router = express.Router();
  * /api/v1/user/create-account:
  *   post:
  *     summary: Create a new user account
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -41,7 +41,7 @@ router.post('/create-account', globalValidator(userValidationSchema), createAcco
  * /api/v1/user/generate-qr-code/{id}:
  *   get:
  *     summary: Generate a QR code for a user
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -100,7 +100,7 @@ router.get('/generate-qr-code/:id', generateQRCode);
  * /api/v1/user/login:
  *   post:
  *     summary: User login
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -125,7 +125,7 @@ router.post('/login', globalValidator(userLoginValidationSchema), signin);
  * /api/v1/user/logout:
  *   post:
  *     summary: User logout
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     responses:
  *       200:
  *         description: Logout successful
@@ -137,7 +137,7 @@ router.post('/logout', userLogout);
  * /api/v1/user/request-access-token:
  *   post:
  *     summary: Request access token
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -178,7 +178,7 @@ router.post('/request-access-token', requestAccessToken);
  * /api/v1/user/forgot-password:
  *   post:
  *     summary: Request password reset
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -217,7 +217,7 @@ router.post('/forgot-password', forgotPassword);
  * /api/v1/user/firebase-login:
  *   post:
  *     summary: Firebase login
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -258,7 +258,7 @@ router.post('/firebase-login', firebaseLogin);
  * /api/v1/user/auth/github:
  *   get:
  *     summary: Redirect to GitHub for authentication
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     responses:
  *       302:
  *         description: Redirected to GitHub
@@ -270,7 +270,7 @@ router.get('/auth/github', redirectToGithubLogin);
  * /api/v1/user/auth/github/callback:
  *   get:
  *     summary: Handle GitHub callback
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     responses:
  *       200:
  *         description: GitHub access token received
@@ -282,7 +282,7 @@ router.get('/auth/github/callback', handleGeneratedGitHubAccessToken);
  * /api/v1/user/reset-password/{token}:
  *   post:
  *     summary: Reset user password
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     parameters:
  *       - name: token
  *         in: path
@@ -328,7 +328,7 @@ router.post('/reset-password/:token', resetPassword);
  * /api/v1/user/show-users:
  *   get:
  *     summary: Retrieve all users from the backend and database management system
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     responses:
  *       200:
  *         description: A list of users
@@ -340,7 +340,7 @@ router.get('/show-users', authorizeRoles(UserStatus.ADMIN), showUsers);
  * /api/v1/user/show-user/{id}:
  *   get:
  *     summary: Retrieve a user by ID from the database management system
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -361,7 +361,7 @@ router.get('/show-user/:id',authorizeRoles(UserStatus.ADMIN), showUser);
  * /api/v1/user/update-account/{id}:
  *   put:
  *     summary: Update user account by user ID
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -388,7 +388,7 @@ router.put('/update-account/:id', globalValidator(updateUserValidationSchema), u
  * /api/v1/user/delete-account/{id}:
  *   delete:
  *     summary: Delete a user account by his or her account ID.
- *     tags: [User]
+ *     tags: [User Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path

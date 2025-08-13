@@ -13,7 +13,7 @@ const router = express.Router();
  * /api/v1/promode-code/generate:
  *   post:
  *     summary: Generate a promo code
- *     tags: [Promo Codes]
+ *     tags: [PromoCode Management Endpoints]
  *     security:
  *       - bearerAuth: [] 
  *     requestBody:
@@ -61,7 +61,7 @@ router.post('/generate',
  * /api/v1/promo-code/apply:
  *   post:
  *     summary: Apply a promo code during checkout
- *     tags: [Promo Codes]
+ *     tags: [PromoCode Management Endpoints]
  *     security:
  *       - bearerAuth: [] 
  *     requestBody:

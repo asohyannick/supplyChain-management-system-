@@ -434,16 +434,11 @@ const updateReviewValidationSchema = Yup.object().shape({
 });
 
 const biometricDataSchema = Yup.object().shape({
-    userId: Yup.string()
-        .required('User ID is required')
-        .test('is-valid-objectid', 'User ID must be a valid ObjectId', (value) => {
-            return Types.ObjectId.isValid(value);
-        }),
-    fingerprint: Yup.string()
+    fingerprintData: Yup.string()
         .required('Fingerprint data is required'),
-    facialRecognition: Yup.string()
+    facialRecognitionData: Yup.string()
         .required('Facial recognition data is required'),
-    irisScan: Yup.string()
+    irisScanData: Yup.string()
         .required('Iris scan data is required'),
 });
 

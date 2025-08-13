@@ -17,7 +17,7 @@ const router = express.Router();
  *   post:
  *     summary: Create a new drone delivery request
  *     description: Endpoint to create a new drone delivery request with user information and package details.
- *     tags: [Drone]
+ *     tags: [Drone Management Endpoints]
  *     requestBody:
  *       required: true
  *       content:
@@ -133,8 +133,7 @@ router.post(
  *   get:
  *     summary: Retrieve a list of drones
  *     description: Endpoint to fetch all drones available for delivery.
- *     tags:
- *       - Drone
+ *     tags: [Drone Management Endpoints]
  *     security:
  *       - Bearer: []  # Assuming you are using Bearer token for authentication
  *     responses:
@@ -232,8 +231,7 @@ router.get('/show-drones',
  *   get:
  *     summary: Retrieve details of a specific drone
  *     description: Endpoint to fetch details of a drone by its unique identifier.
- *     tags:
- *       - Drone
+ *     tags: [Drone Management Endpoints]
  *     security:
  *       - Bearer: []  # Assuming you are using Bearer token for authentication
  *     parameters:
@@ -348,8 +346,7 @@ router.get('/show-drone/:id',
  *   get:
  *     summary: Optimize drone routes using AI and weather data
  *     description: Endpoint to fetch optimized drone routes based on AI algorithms and current weather conditions.
- *     tags:
- *       - Drone
+ *     tags: [Drone Management Endpoints]
  *     security:
  *       - Bearer: []  # Assuming you are using Bearer token for authentication
  *     responses:
@@ -415,8 +412,7 @@ router.get('/ai-drone-optimization',
  *   put:
  *     summary: Update details of a specific drone
  *     description: Endpoint to update the information of a drone by its unique identifier.
- *     tags:
- *       - Drone
+ *     tags: [ Drone Management Endpoints]
  *     security:
  *       - Bearer: []  # Assuming you are using Bearer token for authentication
  *     parameters:
@@ -557,8 +553,7 @@ router.put('/update-drone/:id',
  *   delete:
  *     summary: Delete a specific drone
  *     description: Endpoint to delete a drone by its unique identifier.
- *     tags:
- *       - Drone
+ *     tags: [Drone Management Endpoints]
  *     security:
  *       - Bearer: []  # Assuming you are using Bearer token for authentication
  *     parameters:

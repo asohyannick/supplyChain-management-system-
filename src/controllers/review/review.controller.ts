@@ -14,6 +14,7 @@ const router = express.Router();
  *   post:
  *     summary: Submit a review
  *     description: Endpoint to submit a review.
+ *     tags: [Review Management Endpoints]
  *     parameters:
  *       - name: Authorization
  *         in: header
@@ -64,6 +65,7 @@ router.post('/submit-review',
  *   put:
  *     summary: Update a review
  *     description: Endpoint to update an existing review by ID.
+ *     tags: [Review Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -126,6 +128,7 @@ router.put('/update-review/:id',
  *   delete:
  *     summary: Delete a review
  *     description: Endpoint to delete an existing review by ID.
+ *     tags: [Review Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path

@@ -15,36 +15,11 @@ const router = express.Router();
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     Subscription:
- *       type: object
- *       properties:
- *         userId:
- *           type: string  # MongoDB ObjectId of the user
- *         subscription:
- *           type: object  # Subscription details
- *           properties:
- *             endpoint:
- *               type: string  # Endpoint for subscription notifications
- *             keys:
- *               type: object
- *               properties:
- *                 p256dh:
- *                   type: string  # Public key for encryption
- *                 auth:
- *                   type: string  # Authentication secret
- *       required:
- *         - userId  # Required field for user ID
- *         - subscription  # Required field for subscription details
- */
-
-/**
- * @swagger
  * /api/v1/subscription/create-subscription:
  *   post:
  *     summary: Create a subscription
  *     description: This endpoint creates a new subscription for a user.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     requestBody:
@@ -89,6 +64,7 @@ router.post('/create-subscription',
  *   post:
  *     summary: Send push notification
  *     description: This endpoint sends a push notification to subscribed users.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     requestBody:
@@ -117,6 +93,7 @@ router.post('/push-notification',
  *   get:
  *     summary: Show all subscriptions
  *     description: This endpoint retrieves all subscriptions for the authenticated user.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -138,6 +115,7 @@ router.get('/show-subscriptions',
  *   get:
  *     summary: Show a specific subscription
  *     description: This endpoint retrieves details of a specific subscription.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -166,6 +144,7 @@ router.get('/show-subscription/:id',
  *   put:
  *     summary: Update a subscription
  *     description: This endpoint updates a specified subscription.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -203,6 +182,7 @@ router.put('/update-subscription/:id',
  *   delete:
  *     summary: Delete a subscription
  *     description: This endpoint deletes a specified subscription.
+ *     tags: [Subscription Management Endpoints]
  *     security:
  *       - bearerAuth: []
  *     parameters:

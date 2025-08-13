@@ -16,7 +16,7 @@ const router = express.Router();
  *   post:
  *     summary: Create Delivery Log
  *     description: Creates a new delivery log in the blockchain.
- *     tags: [BlockChainDelivery]
+ *     tags: [BlockChainDelivery Management Endpoints]
  *     security:
  *       - Bearer: []
  *     requestBody:
@@ -49,7 +49,7 @@ router.get('/show-delivery-logs', authenticationToken, authorizeRoles(UserStatus
  *   get:
  *     summary: Retrieve a specific delivery log from the blockchain
  *     description: Endpoint to fetch a delivery log by its unique identifier.
- *     tags: [BlockChainDelivery]
+ *     tags: [BlockChainDelivery Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -119,7 +119,7 @@ router.get('/show-delivery-log/:id', authenticationToken, authorizeRoles(UserSta
  *   put:
  *     summary: Update a specific delivery log in the blockchain
  *     description: Endpoint to update delivery log details by its unique identifier.
- *     tags: [BlockChainDelivery]
+ *     tags: [BlockChainDelivery Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path
@@ -214,7 +214,7 @@ router.put('/update-delivery-log/:id', authenticationToken, authorizeRoles(UserS
  *   delete:
  *     summary: Delete a specific delivery log from the blockchain
  *     description: Endpoint to delete a delivery log by its unique identifier.
- *     tags: [BlockChainDelivery]
+ *     tags: [BlockChainDelivery Management Endpoints]
  *     parameters:
  *       - name: id
  *         in: path

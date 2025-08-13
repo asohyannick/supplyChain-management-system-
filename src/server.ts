@@ -1,7 +1,9 @@
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
+import * as faceapi from 'face-api.js';
 import express, { Application } from 'express';
 import http from 'http';
+import path from 'path';
 import { WebSocketServer } from 'ws';
 import morgan from 'morgan';
 import logger from './config/logger/logger';
@@ -53,6 +55,18 @@ const initWebSocketServer = () => {
 async function saveDroneData(data: IDrone) {
     const drone = new Drone(data);
     await drone.save();
+}
+// Load models for face-api
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+async function loadFaceApiModels() {
+    const MODEL_URL = path.join(__dirname, './models/biometric/biometric.model.ts');
+    try {
+        await faceapi.nets.ssdMobilenetv1.loadFromDisk(MODEL_URL);
+        await faceapi.nets.faceLandmark68Net.loadFromDisk(MODEL_URL);
+        await faceapi.nets.faceRecognitionNet.loadFromDisk(MODEL_URL);
+    } catch (error) {
+        console.error('Error loading face-api models:', error);
+    }
 }
 // Environment variable configurations
 const {
@@ -106,6 +120,7 @@ app.use(serverSideError);
 const startServer = async () => {
     try {
         await databaseConfiguration(),
+        await loadFaceApiModels(),
             app.listen(APP_PORT, () => {
                 console.log(`Server is called ${APP_NAME}
                 running on ${APP_HOST}

@@ -1,17 +1,18 @@
 import express from 'express';
-import register from '../../services/biometric/register/register';
 import globalValidator from '../../middleware/globalValidator/globalValidator';
 import authenticationToken from '../../middleware/authentication/authenToken'; 
 import { biometricDataSchema } from '../../utils/validator';
 import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
 import { UserStatus } from '../../enums/user/user.constants';
+import authenticate from '../../services/biometric/register/register';
 const router = express.Router();
 /**
  * @swagger
- * /api/v1/biometric/register:
+ * /api/v1/biometric/authenticate:
  *   post:
  *     summary: Register a new user with biometric data
  *     description: This endpoint allows users to register by providing their biometric data.
+ *     tags: [Biometric Management Endpoints]
  *     security:
  *       - bearerAuth: []  # Security scheme for authentication
  *     requestBody:
@@ -43,11 +44,11 @@ const router = express.Router();
  *                   example: Invalid biometric data  # Example error message
  */
 
-router.post('/register', 
+router.post('/authenticate',
     authenticationToken,  // Middleware for authentication
     authorizeRoles(UserStatus.USER),  // Middleware for role-based access control
     globalValidator(biometricDataSchema),  // Middleware for validating request body
-    register  // Service for handling registration
+    authenticate //Service for handling biometric registration
 );
 
 export default router;

@@ -6,9 +6,9 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
-            title: 'AirMailGoBackend Restful APIs Documentation',
+            title: 'SupplyChainManagementSystem Restful APIs Documentation',
             version: '1.0.0',
-            description: 'The AirMailGoBackend API documentation provides detailed information about the endpoints, request/response formats, and authentication methods used in the application.',
+            description: 'The API documentation provides detailed information about the endpoints, request/response formats, and authentication methods used in the application.',
         },
         servers: [
             {

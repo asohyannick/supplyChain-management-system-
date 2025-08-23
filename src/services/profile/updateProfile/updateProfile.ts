@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import UserProfile from '../../../models/profile/profile.model';
+import bcrypt from 'bcryptjs';
 const updateUserProfile = async (req: Request, res: Response): Promise<Response> => {
     try {
         const {
@@ -12,8 +13,11 @@ const updateUserProfile = async (req: Request, res: Response): Promise<Response>
             role,
             drones,
         } = req.body;
-        const { id } = req.params;
-        const existingProfile = await UserProfile.findByIdAndUpdate(id, {
+        let hashedPassword;
+        if(password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+        const updateData: any = {
             userId,
             firstName,
             lastName,
@@ -21,6 +25,13 @@ const updateUserProfile = async (req: Request, res: Response): Promise<Response>
             password,
             role,
             drones,
+        }
+        if (hashedPassword) {
+            updateData.password = hashedPassword;
+        }
+        const { id } = req.params;
+        const existingProfile = await UserProfile.findByIdAndUpdate(id, {
+         updateData,
         }, { new: true, runValidators: true});  
         if(!existingProfile) {
             return res.status(StatusCodes.NOT_FOUND).json({

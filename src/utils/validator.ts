@@ -178,8 +178,7 @@ const subscriptionSchema = Yup.object().shape({
       userId: Yup.string()
         .required('User ID is required')
         .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
-            if (!value) return false; // Handle null or undefined
-            // Only check if it's a valid ObjectId if it's a string
+            if (!value) return false; 
             return typeof value === 'string' && Types.ObjectId.isValid(value);
         }),
     subscription: Yup.object().shape({
@@ -194,8 +193,7 @@ const updateSubscriptionSchema = Yup.object().shape({
     userId: Yup.string()
         .required('User ID is required')
         .test('is-objectid', 'User ID must be a valid ObjectId', (value) => {
-            if (!value) return false; // Handle null or undefined
-            // Only check if it's a valid ObjectId if it's a string
+            if (!value) return false; 
             return typeof value === 'string' && Types.ObjectId.isValid(value);
         }),   
     subscription: Yup.object().shape({
@@ -255,7 +253,11 @@ const userProfileValidationSchema = Yup.object().shape({
         .email("Email is not valid."),
     password: Yup.string()
         .required("Password is required.")
-        .min(8, "Password must be at least 8 characters long."),
+        .min(8, "Password must be at least 8 characters long.")
+        .matches(PASSWORD_REGEX, {
+            message: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+            excludeEmptyString: true,
+        }),
     role: Yup.string()
         .oneOf(Object.values(UserStatus), "Role must be one of the predefined values.")
         .default(UserStatus.USER),

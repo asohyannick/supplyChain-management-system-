@@ -18,15 +18,16 @@ const createAccount = async (req: Request, res: Response) => {
         }
         let userRole = UserStatus.USER; 
         if (role) {
-            if ([UserStatus.ADMIN,UserStatus.DISPATCHER,UserStatus.DRONE_OPERATOR].includes(role)) {
+            const normalizedRole = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
+            if (Object.values(UserStatus).includes(normalizedRole)) {
                 const requesterRole = req.user?.role; 
-                if (requesterRole !== UserStatus.ADMIN && requesterRole !== UserStatus.DISPATCHER && requesterRole !== UserStatus.DRONE_OPERATOR) {
+                if (requesterRole && ![UserStatus.ADMIN, UserStatus.DISPATCHER, UserStatus.DRONE_OPERATOR].includes(requesterRole)) {
                     return res.status(StatusCodes.FORBIDDEN).json({
                         success: false,
                         message: "You do not have permission to assign this role.",
                     });
                 }
-                userRole = role; 
+                userRole = normalizedRole; 
             } else {
                 return res.status(StatusCodes.BAD_REQUEST).json({
                     success: false,
@@ -34,7 +35,6 @@ const createAccount = async (req: Request, res: Response) => {
                 });
             }
         }
-
         const newUser = new User({
             firstName,
             lastName,
@@ -49,6 +49,7 @@ const createAccount = async (req: Request, res: Response) => {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
+            isAdmin: newUser.role === UserStatus.ADMIN,
             role: newUser.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {

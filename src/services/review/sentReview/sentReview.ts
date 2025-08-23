@@ -15,9 +15,10 @@ const sentReview = async(req: Request, res: Response): Promise<Response> => {
             firstName,
             lastName,
             email,
-            date: Date.now(),
+            feature,
             usabilityRating,
             message,
+            date: Date.now(),
         });
         await newReview.save();
         return res.status(StatusCodes.CREATED).json({

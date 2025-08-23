@@ -16,6 +16,7 @@ const updateReview = async(req: Request, res: Response): Promise<Response> => {
             firstName,
             lastName,
             email,
+            feature,
             date: Date.now(),
             usabilityRating,
             message,

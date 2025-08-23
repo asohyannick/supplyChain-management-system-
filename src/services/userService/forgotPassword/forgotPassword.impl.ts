@@ -30,7 +30,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 
         await transporter.sendMail({
             to: user.email,
-            subject: "Password Reset",
+            subject: "Request to Reset Your Password",
             html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; border-radius: 8px; max-width: 600px; margin: auto;">
             <h2 style="color: #333;">Password Reset Request</h2>
@@ -48,7 +48,7 @@ const forgotPassword = async (req: Request, res: Response) => {
             </p>
             <p style="color: #555; font-size: 14px;">
                 Thank you,<br>
-                The Support Team
+                The AirMailGo Support Team
             </p>
         </div>
     `,

@@ -17,14 +17,21 @@ const refundStripePayment = async (req: Request, res: Response): Promise<Respons
         if (payment.status === PaymentStatus.REFUNDED) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "Payment already refunded" });
         }
-        // Refund payment using stripe
-        const refund = await stripe.refunds.create({
-            payment_intent: payment.paymentIntentId,
-        });
-        // Update payment status in the database
-        payment.status = PaymentStatus.REFUNDED;
-        await payment.save();
-        return res.status(StatusCodes.OK).json({ message: "Payment has been refunded successfully", refund });
+        const paymentIntent = await stripe.paymentIntents.retrieve(payment.paymentIntentId);
+        console.log("PaymentIntent:", paymentIntent);
+        if (paymentIntent.status === 'succeeded') {
+            // Proceed with refund logic
+            const refund = await stripe.refunds.create({
+                payment_intent: payment.paymentIntentId,
+            });
+
+            // Update payment status in the database
+            payment.status = PaymentStatus.REFUNDED;
+            await payment.save();
+            return res.status(StatusCodes.OK).json({ message: "Payment has been refunded successfully", refund });
+        } else {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Payment has not been successfully completed.", status: paymentIntent.status });
+        }
     } catch (error) {
         console.error("Error occurred while processing payment with Stripe:", error);
 

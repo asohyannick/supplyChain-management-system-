@@ -15,7 +15,7 @@ const authenticationToken = async (req: Request, res: Response, next: NextFuncti
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as CustomJWTPayload;
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded.id);
         if (!user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User not found!" });
         }

@@ -1,10 +1,10 @@
 export enum Currency {
-    USD = 'usd',
-    EURO = 'eur',
-    GBP = 'gbp',
-    AUD = 'aud',
-    CAD = 'cad',
-    INR = 'inr'
+    USD = 'USD',
+    EURO = 'EUR',
+    GBP = 'GBP',
+    AUD = 'AUD',
+    CAD = 'CAD',
+    INR = 'INR',
 }
 export enum PaymentStatus {
     PENDING = 'PENDING',

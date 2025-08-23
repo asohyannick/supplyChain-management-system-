@@ -41,12 +41,11 @@ const userProfileSchema = new Schema<IUserProfile>({
         batteryLevel: { type: Number },
     }],
 }, { timestamps: true });
-
-const UserProfile = model<IUserProfile>('UserProfile', userProfileSchema);
 userProfileSchema.pre<IUserProfile>('save', async function (next) {
    if(!this.isModified('password')) return next;
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(salt, this.password);
+    this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+const UserProfile = model<IUserProfile>('UserProfile', userProfileSchema);
 export default UserProfile;

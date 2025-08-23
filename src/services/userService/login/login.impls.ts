@@ -3,6 +3,7 @@ import User from "../../../models/user/user.model";
 import bcrypt from 'bcryptjs';
 import { StatusCodes } from "http-status-codes";
 import jwt from 'jsonwebtoken';
+import { UserStatus } from "../../../enums/user/user.constants";
 const signin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
@@ -25,6 +26,7 @@ const signin = async (req: Request, res: Response) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
+            isAdmin: user.role === UserStatus.ADMIN,
             role: user.role,
         };
         const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {

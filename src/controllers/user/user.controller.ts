@@ -16,6 +16,7 @@ import { handleGeneratedGitHubAccessToken, redirectToGithubLogin } from '../../s
 import generateQRCode from '../../services/userService/generateQRCode/generateQRCode';
 import authorizeRoles from '../../middleware/roleBasedAccessControlAuthentication/roleBasedAccessControlAuthenticationToken';
 import { UserStatus } from '../../enums/user/user.constants';
+import authenticationToken from '../../middleware/authentication/authenToken';
 const router = express.Router();
 /**
  * @swagger
@@ -333,7 +334,7 @@ router.post('/reset-password/:token', resetPassword);
  *       200:
  *         description: A list of users
  */
-router.get('/show-users', authorizeRoles(UserStatus.ADMIN), showUsers);
+router.get('/show-users', authenticationToken, authorizeRoles(UserStatus.ADMIN), showUsers);
 
 /**
  * @swagger
@@ -354,7 +355,7 @@ router.get('/show-users', authorizeRoles(UserStatus.ADMIN), showUsers);
  *       404:
  *         description: User not found
  */
-router.get('/show-user/:id',authorizeRoles(UserStatus.ADMIN), showUser);
+router.get('/show-user/:id',authenticationToken, authorizeRoles(UserStatus.ADMIN), showUser);
 
 /**
  * @swagger
